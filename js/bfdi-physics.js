@@ -82,6 +82,9 @@ request.addEventListener ("load", function() {
 	var characters = JSON.parse (request.responseText);
 	characters.forEach (function (character) {
 		var entity = new BPT.Entity (character);
+		new BPT.Entity (character);
+		new BPT.Entity (character);
+		new BPT.Entity (character);
 	});
 }, false);
 request.send();
