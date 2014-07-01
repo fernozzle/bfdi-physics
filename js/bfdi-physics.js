@@ -1,5 +1,14 @@
+var width  = document.body.clientWidth;
+var height = document.body.clientHeight;
+
+var canvas  = document.getElementById ("canvas");
+var context = canvas.getContext ("2d");
+canvas.width  = width;
+canvas.height = height;
+
+var viewScale = 30;
+
 var world;
-	  
 var
 	b2Vec2 = Box2D.Common.Math.b2Vec2,
 	b2BodyDef = Box2D.Dynamics.b2BodyDef,
@@ -23,8 +32,8 @@ var bodyDef = new b2BodyDef;
 
 //create ground
 var wallThick = 1;
-var roomW = 20;
-var roomH = 13;
+var roomW = width  / viewScale;
+var roomH = height / viewScale;
 
 bodyDef.type = b2Body.b2_staticBody;
 
@@ -63,8 +72,8 @@ for(var i = 0; i < 20; i++) {
 */
 //setup debug draw
 var debugDraw = new b2DebugDraw();
-debugDraw.SetSprite (document.getElementById ("canvas").getContext ("2d"));
-debugDraw.SetDrawScale (30.0);
+debugDraw.SetSprite (context);
+debugDraw.SetDrawScale (viewScale);
 debugDraw.SetFillAlpha (0.3);
 debugDraw.SetLineThickness (1.0);
 debugDraw.SetFlags (b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);

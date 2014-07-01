@@ -22,6 +22,10 @@ BPT.BodyBuilder = {
 		var topLeft = this.minVertex (shapes.map (function (shape) {
 			return this.getTopLeft (shape);
 		}, this));
+		if (object.margin) {
+			topLeft[0] -= object.margin[0];
+			topLeft[1] -= object.margin[1];
+		}
 		
 		// Move shapes so that the top-left corner is at the origin
 		shapes = shapes.map (function (shape) {
