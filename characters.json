@@ -1,7 +1,18 @@
 [
 	{
-		"id": "blocky",
+		"id": "announcer",
 		"density": 0.8,
+		"friction": 0.1,
+		"restitution": 0.2,
+		"shapes": [[
+			[0.44, 0.63]
+		]],
+		"mirrorX": true,
+		"mirrorY": true
+	},
+	{
+		"id": "blocky",
+		"density": 0.6,
 		"friction": 0.2,
 		"restitution": 0.6,
 		"shapes": [[
@@ -10,20 +21,6 @@
 			[1.40, 1.23],
 			[1.26, 1.40],
 			[0.00, 1.37],
-			[0.00, 0.11]
-		]]
-	},
-	{
-		"id": "book",
-		"density": 0.7,
-		"friction": 0.4,
-		"restitution": 0.2,
-		"shapes": [[
-			[0.18, 0.00],
-			[1.43, 0.00],
-			[1.43, 1.49],
-			[1.33, 1.58],
-			[0.00, 1.58],
 			[0.00, 0.11]
 		]]
 	},
@@ -44,6 +41,20 @@
 				[1.20, 0.30]
 			]
 		]
+	},
+	{
+		"id": "book",
+		"density": 0.7,
+		"friction": 0.4,
+		"restitution": 0.2,
+		"shapes": [[
+			[0.18, 0.00],
+			[1.43, 0.00],
+			[1.43, 1.49],
+			[1.33, 1.58],
+			[0.00, 1.58],
+			[0.00, 0.11]
+		]]
 	},
 	{
 		"id": "bubble",
@@ -131,27 +142,11 @@
 			]
 		]
 	},
-// simplify?
-	{
-		"id": "fries",
-		"density": 0.3,
-		"friction": 0.5,
-		"restitution": 0.2,
-		"shapes": [[
-			[0.19, -1.07],
-			[0.49, -0.86],
-			[0.78, -0.50],
-			[0.50,  1.03],
-			[0.19,  1.07]
-		]],
-		"mirrorX": true
-	},
 	{
 		"id": "flower",
 		"density": 0.2,
 		"friction": 0.6,
 		"restitution": 0.2,
-		// image continues 3.8 pixels to the left of the vertices
 		"shapes": [
 			[
 				[0.95, 0.00],
@@ -188,7 +183,23 @@
 				[0.93, 1.32],
 				[0.01, 1.06]
 			]
-		]
+		],
+		"margin": [0.04, 0]
+	},
+// simplify?
+	{
+		"id": "fries",
+		"density": 0.3,
+		"friction": 0.5,
+		"restitution": 0.2,
+		"shapes": [[
+			[0.19, -1.07],
+			[0.49, -0.86],
+			[0.78, -0.50],
+			[0.50,  1.03],
+			[0.19,  1.07]
+		]],
+		"mirrorX": true
 	},
 // simplify?
 	{
@@ -205,6 +216,18 @@
 			[0.20,  0.66]
 		]],
 		"mirrorX": true
+	},
+	{
+		"id": "golf-ball",
+		"density": 1.1,
+		"friction": 0.2,
+		"restitution": 0.4,
+		"shapes": [
+			{
+				"radius": 0.62,
+				"center": [0, 0]
+			}
+		]
 	},
 // simplify!
 	{
@@ -245,18 +268,73 @@
 		"mirrorY": true
 	},
 	{
+		"id": "match",
+		"density": 0.3,
+		"friction": 0.5,
+		"restitution": 0.8,
+		"shapes": [
+			{
+				"radius": 0.30,
+				"center": [0, 0.30]
+			},
+			[
+				[0.20, 0.51],
+				[0.20, 2.48]
+			]
+		],
+		"mirrorX": true
+	},
+	{
 		"id": "needle",
 		"density": 0.9,
 		"friction": 0.05,
 		"restitution": 0.85,
-		"shapes": [[
-			[0.00, 0.00],
-			[0.17, 0.08],
-			[0.22, 0.22],
-			[0.04, 2.47],
-			[0.00, 2.51]
-		]],
+		"shapes": [
+			{
+				"radius": 0.22,
+				"center": [0, 0.22]
+			},
+			[
+				[0.21, 0.24],
+				[0.03, 2.50]
+			]
+		],
 		"mirrorX": true
+	},
+	{
+		"id": "nickel",
+		"density": 0.3,
+		"friction": 0.1,
+		"restitution": 0.7,
+		"shapes": [
+			{
+				"radius": 0.54,
+				"center": [0.54, 0.54]
+			},
+			{
+				"radius": 0.54,
+				"center": [0.64, 0.54]
+			}
+		]
+	},
+	{
+		"id": "pen",
+		"density": 0.2,
+		"friction": 0.2,
+		"restitution": 0.8,
+		"shapes": [
+			[
+				[0.06, 0.00],
+				[0.44, 0.00],
+				[0.46, 2.46],
+				[0.05, 2.46]
+			],
+			[
+				[0.35, 0.56],
+				[0.56, 0.56],
+				[0.56, 1.53]
+			]
+		]
 	},
 	{
 		"id": "pencil",
@@ -264,8 +342,7 @@
 		"friction": 0.3,
 		"restitution": 0.7,
 		"shapes": [[
-			[0.16, 0.00],
-			[0.22, 0.11],
+			[0.22, 0.00],
 			[0.22, 2.12],
 			[0.00, 2.51]
 		]],
@@ -295,6 +372,19 @@
 			]
 		],
 		"mirrorX": true
+	},
+	{
+		"id": "puffball",
+		"density": 0.5,
+		"friction": 0.8,
+		"restitution": 0.2,
+		"shapes": [
+			{
+				"radius": 0.66,
+				"center": [0, 0]
+			}
+		],
+		"margin": [0.05, 0.05]
 	},
 // simplify?
 	{
@@ -351,6 +441,63 @@
 			[0.11, 0.49],
 			[0.34, 0.25],
 			[0.74, 0.05]
+		]]
+	},
+	{
+		"id": "spongy",
+		"density": 0.3,
+		"friction": 0.9,
+		"restitution": 0.8,
+		"shapes": [[
+			[0.10, 0.06],
+			[3.91, 0.03],
+			[4.00, 2.25],
+			[3.61, 2.40],
+			[0.03, 2.40]
+		]]
+	},
+	{
+		"id": "teardrop",
+		"density": 0.7,
+		"friction": 0.01,
+		"restitution": 0.7,
+		"shapes": [
+			{
+				"radius": 0.47,
+				"center": [0.47, 1.04]
+			},
+			[
+				[0.22, 0.00],
+				[0.69, 0.33],
+				[0.93, 0.98],
+				[0.29, 0.67]
+			]
+		]
+	},
+	{
+		"id": "tennis-ball",
+		"density": 0.5,
+		"friction": 0.4,
+		"restitution": 0.9,
+		"shapes": [
+			{
+				"radius": 0.98,
+				"center": [0, 0]
+			}
+		]
+	},
+	{
+		"id": "woody",
+		"density": 0.2,
+		"friction": 0.4,
+		"restitution": 0.7,
+		"shapes": [[
+			[0.13, 0.11],
+			[0.71, 0.00],
+			[1.57, 0.15],
+			[1.53, 1.53],
+			[0.18, 1.64],
+			[0.00, 1.21]
 		]]
 	},
 // simplify!
