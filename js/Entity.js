@@ -1,4 +1,4 @@
-BPT.Entity = function (object) {
+BPT.Entity = function (object, position) {
 	this.element = null;
-	this.body = BPT.BodyBuilder.createBody(object);
+	this.body = BPT.BodyBuilder.createBody(object, position);
 }

@@ -79,12 +79,22 @@ window.setInterval (function() {
 var request = new XMLHttpRequest();
 request.open ("GET", "characters.json");
 request.addEventListener ("load", function() {
-	var characters = JSON.parse (request.responseText);
+	var responseText = request.responseText;
+	responseText = responseText.replace(/^.*\/\/.*$/mg, "");
+	var characters = JSON.parse (responseText);
 	characters.forEach (function (character) {
-		var entity = new BPT.Entity (character);
+		var entity = new BPT.Entity (
+			character,
+			[
+				Math.random() * roomW * 0.9,
+				Math.random() * roomH * 0.9
+			]
+		);
+		/*
 		new BPT.Entity (character);
 		new BPT.Entity (character);
 		new BPT.Entity (character);
+		*/
 	});
 }, false);
 request.send();

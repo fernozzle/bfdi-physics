@@ -1,7 +1,9 @@
 BPT.BodyBuilder = {
-	createBody: function (object) {
+	createBody: function (object, position) {
 		var bodyDef = new Box2D.Dynamics.b2BodyDef();
 		bodyDef.type = Box2D.Dynamics.b2Body.b2_dynamicBody;
+		bodyDef.position.x = position[0];
+		bodyDef.position.y = position[1];
 		
 		var body = world.CreateBody (bodyDef);
 		
