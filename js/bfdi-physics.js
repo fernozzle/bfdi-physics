@@ -88,16 +88,9 @@ request.addEventListener ("load", function() {
 	var responseText = request.responseText;
 	responseText = responseText.replace(/^.*\/\/.*$/mg, "");
 	var characters = JSON.parse (responseText);
-	console.log (characters.length);
+	var bodyCount = 0;
 	characters.forEach (function (character) {
-		var entity = new BPT.Entity (
-			character,
-			[
-				Math.random() * roomW * 0.9,
-				Math.random() * roomH * 0.9
-			]
-		);
-		for (var i = 0; i < 0; i++) {
+		for (var i = 0; i < 2; i++) {
 			new BPT.Entity (
 				character,
 				[
@@ -105,8 +98,10 @@ request.addEventListener ("load", function() {
 					Math.random() * roomH * 0.9
 				]
 			);
+			bodyCount++;
 		}
 	});
+	console.log (bodyCount + " bodies");
 }, false);
 request.send();
 
