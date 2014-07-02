@@ -55,21 +55,6 @@ bodyDef.position = new b2Vec2 (roomW / 2, -wallThick / 2);
 fixDef.shape.SetAsBox(roomW / 2 + wallThick, wallThick / 2);
 world.CreateBody(bodyDef).CreateFixture(fixDef);
 
-//create some objects
-/*
-bodyDef.type = b2Body.b2_dynamicBody;
-for(var i = 0; i < 20; i++) {
-	if(Math.random() > 0.5) {
-		fixDef.shape = new b2PolygonShape;
-		fixDef.shape.SetAsBox (Math.random() + 0.1, Math.random() + 0.1);
-	} else {
-		fixDef.shape = new b2CircleShape (Math.random() + 0.1);
-	}
-	bodyDef.position.x = Math.random() * 10;
-	bodyDef.position.y = Math.random() * 10;
-	world.CreateBody (bodyDef).CreateFixture (fixDef);
-}
-*/
 //setup debug draw
 var debugDraw = new b2DebugDraw();
 debugDraw.SetSprite (context);
@@ -79,11 +64,23 @@ debugDraw.SetLineThickness (1.0);
 debugDraw.SetFlags (b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
 world.SetDebugDraw (debugDraw);
 
-window.setInterval (function() {
+window.requestAnimFrame = (function(){
+	return  window.requestAnimationFrame       || 
+	        window.webkitRequestAnimationFrame || 
+	        window.mozRequestAnimationFrame    || 
+	        window.oRequestAnimationFrame      || 
+	        window.msRequestAnimationFrame     || 
+	        function(callback, element){
+	          window.setTimeout(callback, 1000 / 60);
+	        };
+})();
+var update = function() {
 	world.Step (1/60, 10, 10); // framerate, velocity iterations, position iterations
 	world.DrawDebugData();
 	world.ClearForces();
-}, 1000 / 60);
+	requestAnimFrame (update);
+}
+requestAnimFrame (update);
 
 var request = new XMLHttpRequest();
 request.open ("GET", "characters.json");
@@ -91,6 +88,7 @@ request.addEventListener ("load", function() {
 	var responseText = request.responseText;
 	responseText = responseText.replace(/^.*\/\/.*$/mg, "");
 	var characters = JSON.parse (responseText);
+	console.log (characters.length);
 	characters.forEach (function (character) {
 		var entity = new BPT.Entity (
 			character,
@@ -99,11 +97,15 @@ request.addEventListener ("load", function() {
 				Math.random() * roomH * 0.9
 			]
 		);
-		/*
-		new BPT.Entity (character);
-		new BPT.Entity (character);
-		new BPT.Entity (character);
-		*/
+		for (var i = 0; i < 0; i++) {
+			new BPT.Entity (
+				character,
+				[
+					Math.random() * roomW * 0.9,
+					Math.random() * roomH * 0.9
+				]
+			);
+		}
 	});
 }, false);
 request.send();
