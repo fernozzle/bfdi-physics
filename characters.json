@@ -1,6 +1,5 @@
-[
-	{
-		"id": "announcer",
+{
+	"announcer": {
 		"density": 0.8,
 		"friction": 0.1,
 		"restitution": 0.2,
@@ -10,8 +9,7 @@
 		"mirrorX": true,
 		"mirrorY": true
 	},
-	{
-		"id": "blocky",
+	"blocky": {
 		"density": 0.6,
 		"friction": 0.2,
 		"restitution": 0.6,
@@ -23,8 +21,7 @@
 			[0.00, 1.37]
 		]]
 	},
-	{
-		"id": "bomby",
+	"bomby": {
 		"density": 0.8,
 		"friction": 0.3,
 		"restitution": 0.7,
@@ -41,8 +38,7 @@
 			]
 		]
 	},
-	{
-		"id": "book",
+	"book": {
 		"density": 0.7,
 		"friction": 0.4,
 		"restitution": 0.3,
@@ -52,8 +48,7 @@
 		"mirrorX": true,
 		"mirrorY": true
 	},
-	{
-		"id": "bubble",
+	"bubble": {
 		"density": 0.01,
 		"friction": 0.01,
 		"restitution": 0.7,
@@ -64,8 +59,7 @@
 			}
 		]
 	},
-	{
-		"id": "coiny",
+	"coiny": {
 		"density": 0.3,
 		"friction": 0.1,
 		"restitution": 0.7,
@@ -77,8 +71,7 @@
 		],
 		"margin": [-0.02, 0.03]
 	},
-	{
-		"id": "donut",
+	"donut": {
 		"density": 0.5,
 		"friction": 0.6,
 		"restitution": 0.3,
@@ -89,8 +82,7 @@
 			}
 		]
 	},
-	{
-		"id": "eraser",
+	"eraser": {
 		"density": 0.4,
 		"friction": 0.9,
 		"restitution": 0.5,
@@ -102,8 +94,7 @@
 		]],
 		"margin": [0, -0.02]
 	},
-	{
-		"id": "firey",
+	"firey": {
 		"density": 0.4,
 		"friction": 0.2,
 		"restitution": 0.4,
@@ -134,8 +125,7 @@
 			]
 		]
 	},
-	{
-		"id": "flower",
+	"flower": {
 		"density": 0.2,
 		"friction": 0.6,
 		"restitution": 0.2,
@@ -178,8 +168,7 @@
 		],
 		"margin": [0.04, 0]
 	},
-	{
-		"id": "fries",
+	"fries": {
 		"density": 0.3,
 		"friction": 0.5,
 		"restitution": 0.2,
@@ -191,8 +180,7 @@
 		"mirrorX": true,
 		"margin": [0, 0.09]
 	},
-	{
-		"id": "gelatin",
+	"gelatin": {
 		"density": 0.3,
 		"friction": 0.05,
 		"restitution": 0.2,
@@ -205,8 +193,7 @@
 		]],
 		"mirrorX": true
 	},
-	{
-		"id": "golf-ball",
+	"golf-ball": {
 		"density": 1.1,
 		"friction": 0.2,
 		"restitution": 0.4,
@@ -217,8 +204,7 @@
 			}
 		]
 	},
-	{
-		"id": "ice-cube",
+	"ice-cube": {
 		"density": 0.9,
 		"friction": 0.01,
 		"restitution": 0.1,
@@ -232,8 +218,7 @@
 		]],
 		"margin": [0.01, 0.02]
 	},
-	{
-		"id": "leafy",
+	"leafy": {
 		"density": 0.1,
 		"friction": 0.2,
 		"restitution": 0.5,
@@ -246,8 +231,7 @@
 		"mirrorY": true,
 		"margin": [0, 2.2]
 	},
-	{
-		"id": "match",
+	"match": {
 		"density": 0.3,
 		"friction": 0.5,
 		"restitution": 0.8,
@@ -258,8 +242,7 @@
 		"mirrorX": true,
 		"margin": [0, 0.10]
 	},
-	{
-		"id": "needle",
+	"needle": {
 		"density": 0.9,
 		"friction": 0.05,
 		"restitution": 0.85,
@@ -269,8 +252,7 @@
 		]],
 		"mirrorX": true
 	},
-	{
-		"id": "nickel",
+	"nickel": {
 		"density": 0.3,
 		"friction": 0.1,
 		"restitution": 0.7,
@@ -282,8 +264,7 @@
 		],
 		"margin": [-0.02, 0.03]
 	},
-	{
-		"id": "pen",
+	"pen": {
 		"density": 0.2,
 		"friction": 0.2,
 		"restitution": 0.8,
@@ -301,8 +282,7 @@
 			]
 		]
 	},
-	{
-		"id": "pencil",
+	"pencil": {
 		"density": 0.3,
 		"friction": 0.3,
 		"restitution": 0.7,
@@ -313,8 +293,7 @@
 		]],
 		"mirrorX": true
 	},
-	{
-		"id": "pin",
+	"pin": {
 		"density": 0.7,
 		"friction": 0.2,
 		"restitution": 0.6,
@@ -330,8 +309,7 @@
 		],
 		"mirrorX": true
 	},
-	{
-		"id": "puffball",
+	"puffball": {
 		"density": 0.5,
 		"friction": 0.8,
 		"restitution": 0.2,
@@ -343,8 +321,7 @@
 		],
 		"margin": [0.05, 0.05]
 	},
-	{
-		"id": "rocky",
+	"rocky": {
 		"density": 1.4,
 		"friction": 0.7,
 		"restitution": 0.5,
@@ -357,8 +334,7 @@
 		]],
 		"margin": [0, 0.01]
 	},
-	{
-		"id": "ruby",
+	"ruby": {
 		"density": 1.4,
 		"friction": 0.05,
 		"restitution": 0.5,
@@ -369,8 +345,7 @@
 		]],
 		"mirrorX": true
 	},
-	{
-		"id": "snowball",
+	"snowball": {
 		"density": 0.8,
 		"friction": 0.3,
 		"restitution": 0.05,
@@ -381,8 +356,7 @@
 			}
 		]
 	},
-	{
-		"id": "spongy",
+	"spongy": {
 		"density": 0.3,
 		"friction": 0.9,
 		"restitution": 0.8,
@@ -394,8 +368,7 @@
 			[0.03, 2.40]
 		]]
 	},
-	{
-		"id": "teardrop",
+	"teardrop": {
 		"density": 0.7,
 		"friction": 0.01,
 		"restitution": 0.7,
@@ -412,8 +385,7 @@
 			]
 		]
 	},
-	{
-		"id": "tennis-ball",
+	"tennis-ball": {
 		"density": 0.5,
 		"friction": 0.4,
 		"restitution": 0.9,
@@ -424,8 +396,7 @@
 			}
 		]
 	},
-	{
-		"id": "woody",
+	"woody": {
 		"density": 0.2,
 		"friction": 0.4,
 		"restitution": 0.7,
@@ -438,8 +409,7 @@
 			[0.00, 1.21]
 		]]
 	},
-	{
-		"id": "yellow-face",
+	"yellow-face": {
 		"density": 1,
 		"friction": 0.3,
 		"restitution": 0.8,
@@ -455,4 +425,4 @@
 		]],
 		"margin": [-0.02, -0.02]
 	}
-]
+}
