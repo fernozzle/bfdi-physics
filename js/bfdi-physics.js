@@ -64,6 +64,10 @@ debugDraw.SetLineThickness (1.0);
 debugDraw.SetFlags (b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
 world.SetDebugDraw (debugDraw);
 
+var phys2D = Physics2DDevice.create();
+
+//------------------------------------------------------
+
 window.requestAnimFrame = (function(){
 	return  window.requestAnimationFrame       || 
 	        window.webkitRequestAnimationFrame || 
