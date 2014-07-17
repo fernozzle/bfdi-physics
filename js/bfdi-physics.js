@@ -82,6 +82,23 @@ TurbulenzEngine.onload = function onloadFn() {
 	});
 
 	var shapeSize = 0.8;
+
+	var triangleVerts = [[0,0], [1,0], [0,1]];
+	var triangleShape = phys2D.createPolygonShape({
+		//vertices: phys2D.createRegularPolygonVertices(shapeSize, shapeSize, 6),
+		vertices: triangleVerts,
+		material: rubberMaterial
+	});
+	var center = triangleShape.computeCenterOfMass();
+
+	var triangleVerts2 = triangleVerts.map(function(vert) {
+		return [vert[0] - center[0], vert[1] - center[1]];
+	});
+	var triangleShape2 = phys2D.createPolygonShape({
+		vertices: triangleVerts2,
+		material: rubberMaterial
+	});
+
 	var shapeFactory = [
 		phys2D.createCircleShape({
 			radius: (shapeSize / 2),
@@ -95,11 +112,7 @@ TurbulenzEngine.onload = function onloadFn() {
 			vertices: phys2D.createRegularPolygonVertices(shapeSize, shapeSize, 4),
 			material: heavyMaterial
 		}),
-		phys2D.createPolygonShape({
-			//vertices: phys2D.createRegularPolygonVertices(shapeSize, shapeSize, 6),
-			vertices: [[0,0], [1,0], [0,1]],
-			material: rubberMaterial
-		})
+		triangleShape2
 	];
 
 	// texture rectangles for above shapes.
