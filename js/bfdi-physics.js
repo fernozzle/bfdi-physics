@@ -194,6 +194,9 @@ TurbulenzEngine.onload = function onloadFn() {
 		belt = createBelt(12, 19, 20.5, 17, 0.5, 2);
 		world.addRigidBody(belt);
 
+		belt = createBelt(0, 22, 21, 22, 0.5, 2);
+		world.addRigidBody(belt);
+
 		belt = createBelt(20.5, 10.5, 10, 5, 0.5, -2);
 		world.addRigidBody(belt);
 
