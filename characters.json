@@ -28,7 +28,7 @@
 		"shapes": [
 			{
 				"radius": 0.95,
-				"center": [0.95, 1.21]
+				"origin": [0.95, 1.21]
 			},
 			[
 				[1.46, 0.00],
@@ -55,7 +55,7 @@
 		"shapes": [
 			{
 				"radius": 0.98,
-				"center": [0, 0]
+				"origin": [0, 0]
 			}
 		]
 	},
@@ -66,7 +66,7 @@
 		"shapes": [
 			{
 				"radius": 0.57,
-				"center": [0, 0]
+				"origin": [0, 0]
 			}
 		],
 		"margin": [-0.02, 0.03]
@@ -78,7 +78,7 @@
 		"shapes": [
 			{
 				"radius": 0.84,
-				"center": [0, 0]
+				"origin": [0, 0]
 			}
 		]
 	},
@@ -200,7 +200,7 @@
 		"shapes": [
 			{
 				"radius": 0.62,
-				"center": [0, 0]
+				"origin": [0, 0]
 			}
 		]
 	},
@@ -259,7 +259,7 @@
 		"shapes": [
 			{
 				"radius": 0.57,
-				"center": [0, 0]
+				"origin": [0, 0]
 			}
 		],
 		"margin": [-0.02, 0.03]
@@ -316,7 +316,7 @@
 		"shapes": [
 			{
 				"radius": 0.66,
-				"center": [0, 0]
+				"origin": [0, 0]
 			}
 		],
 		"margin": [0.05, 0.05]
@@ -352,7 +352,7 @@
 		"shapes": [
 			{
 				"radius": 1.03,
-				"center": [0, 0]
+				"origin": [0, 0]
 			}
 		]
 	},
@@ -375,7 +375,7 @@
 		"shapes": [
 			{
 				"radius": 0.47,
-				"center": [0.47, 1.04]
+				"origin": [0.47, 1.04]
 			},
 			[
 				[0.22, 0.00],
@@ -392,7 +392,7 @@
 		"shapes": [
 			{
 				"radius": 0.98,
-				"center": [0, 0]
+				"origin": [0, 0]
 			}
 		]
 	},

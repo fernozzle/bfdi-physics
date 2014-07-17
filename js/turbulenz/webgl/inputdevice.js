@@ -416,7 +416,7 @@ var WebGLInputDevice = (function () {
         if (!this.isWindowFocused) {
             this.isWindowFocused = true;
 
-            window.focus();
+            //window.focus();
             canvas.focus();
 
             this.setEventHandlersFocus();
