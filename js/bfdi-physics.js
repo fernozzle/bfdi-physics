@@ -7,7 +7,6 @@ TurbulenzEngine = WebGLTurbulenzEngine.create({
 });
 
 TurbulenzEngine.onload = function onloadFn() {
-	var debugEnabled = true;
 	var contactsEnabled = false;
 
 	//==========================================================================
@@ -17,19 +16,9 @@ TurbulenzEngine.onload = function onloadFn() {
 	var mathDevice = TurbulenzEngine.createMathDevice({});
 	var requestHandler = RequestHandler.create({});
 
-	var draw2DTexture;
 	var gameSession;
 	function sessionCreated(gameSession) {
 		TurbulenzServices.createMappingTable(requestHandler, gameSession, function (table) {
-			graphicsDevice.createTexture({
-				src: table.getURL("textures/physics2d.png"),
-				mipmaps: true,
-				onload: function (texture) {
-					if (texture) {
-						draw2DTexture = texture;
-					}
-				}
-			});
 		});
 	}
 	gameSession = TurbulenzServices.createGameSession(requestHandler, sessionCreated);
@@ -242,14 +231,7 @@ TurbulenzEngine.onload = function onloadFn() {
 					position: [
 						(x + 0.5) * (stageWidth / xCount),
 						(y + 0.5) * shapeSize
-					],
-					userData: Draw2DSprite.create({
-						width: shapeSize,
-						height: shapeSize,
-						origin: [shapeSize / 2, shapeSize / 2],
-						textureRectangle: textureRectangles[index],
-						texture: draw2DTexture
-					})
+					]
 				});
 				world.addRigidBody(body);
 			}
@@ -311,14 +293,7 @@ TurbulenzEngine.onload = function onloadFn() {
 			var index = Math.floor(Math.random() * shapeFactory.length);
 			body = phys2D.createRigidBody({
 				shapes: [shapeFactory[index].clone()],
-				position: point,
-				userData: Draw2DSprite.create({
-					width: shapeSize,
-					height: shapeSize,
-					origin: [shapeSize / 2, shapeSize / 2],
-					textureRectangle: textureRectangles[index],
-					texture: draw2DTexture
-				})
+				position: point
 			});
 			world.addRigidBody(body);
 		}
@@ -337,12 +312,6 @@ TurbulenzEngine.onload = function onloadFn() {
 	//==========================================================================
 	// Main loop.
 	//==========================================================================
-	var fpsElement = document.getElementById("fpscounter");
-	var lastFPS = "";
-
-	var bodiesElement = document.getElementById("bodiescounter");
-	var lastNumBodies = 0;
-
 	var realTime = 0;
 	var prevTime = TurbulenzEngine.time;
 
@@ -414,70 +383,20 @@ TurbulenzEngine.onload = function onloadFn() {
 			world.step(1 / 60);
 		}
 
-		// draw2D sprite drawing.
-		var bodies = world.rigidBodies;
-		var limit = bodies.length;
-		var i;
-		if (!debugEnabled) {
-			draw2D.begin('alpha', 'deferred');
-			var pos = [];
-			for (i = 0; i < limit; i += 1) {
-				body = bodies[i];
-				if (body.userData) {
-					body.getPosition(pos);
-					var sprite = body.userData;
-					sprite.x = pos[0];
-					sprite.y = pos[1];
-					sprite.rotation = body.getRotation();
-					draw2D.drawSprite(sprite);
-				}
-			}
-			draw2D.end();
-		}
-
 		// physics2D debug drawing.
 		debug.setScreenViewport(draw2D.getScreenSpaceViewport());
-		debug.showRigidBodies = debugEnabled;
+		debug.showRigidBodies = true;
 		debug.showContacts = contactsEnabled;
 
 		debug.begin();
-		if (!debugEnabled) {
-			for (i = 0; i < limit; i += 1) {
-				body = bodies[i];
-				if (!body.userData) {
-					debug.drawRigidBody(body);
-				}
-			}
-		}
 		debug.drawWorld(world);
 		debug.end();
 
 		graphicsDevice.endFrame();
-
-		if (fpsElement) {
-			var fpsText = (graphicsDevice.fps).toFixed(2);
-			if (lastFPS !== fpsText) {
-				lastFPS = fpsText;
-
-				fpsElement.innerHTML = fpsText + " fps";
-			}
-		}
-
-		if (bodiesElement) {
-			if (lastNumBodies !== limit) {
-				lastNumBodies = limit;
-
-				bodiesElement.innerHTML = lastNumBodies + "";
-			}
-		}
 	}
 
 	var intervalID;
 	function loadingLoop() {
-		if (!draw2DTexture) {
-			return;
-		}
-
 		reset();
 		TurbulenzEngine.clearInterval(intervalID);
 		intervalID = TurbulenzEngine.setInterval(mainLoop, 1000 / 60);
