@@ -7,8 +7,6 @@ TurbulenzEngine = WebGLTurbulenzEngine.create({
 });
 
 TurbulenzEngine.onload = function onloadFn() {
-	var contactsEnabled = false;
-
 	//==========================================================================
 	// Turbulenz Initialization
 	//==========================================================================
@@ -386,7 +384,6 @@ TurbulenzEngine.onload = function onloadFn() {
 		// physics2D debug drawing.
 		debug.setScreenViewport(draw2D.getScreenSpaceViewport());
 		debug.showRigidBodies = true;
-		debug.showContacts = contactsEnabled;
 
 		debug.begin();
 		debug.drawWorld(world);
