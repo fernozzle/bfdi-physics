@@ -235,10 +235,16 @@
 		"density": 3,
 		"friction": 0.5,
 		"restitution": 0.8,
-		"shapes": [[
-			[0.20, 0.10],
-			[0.20, 2.48]
-		]],
+		"shapes": [
+			{
+				"radius": 0.30,
+				"origin": [0, 0.30]
+			},
+			[
+				[0.20, 0.40],
+				[0.20, 2.48]
+			]
+		],
 		"mirrorX": true,
 		"margin": [0, 0.10]
 	},
@@ -246,10 +252,16 @@
 		"density": 9,
 		"friction": 0.05,
 		"restitution": 0.85,
-		"shapes": [[
-			[0.22, 0.12],
-			[0.00, 2.54]
-		]],
+		"shapes": [
+			{
+				"radius": 0.22,
+				"origin": [0, 0.12]
+			},
+			[
+				[0.22, 0.12],
+				[0.00, 2.54]
+			]
+		],
 		"mirrorX": true
 	},
 	"nickel": {
