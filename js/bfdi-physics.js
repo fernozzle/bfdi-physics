@@ -125,30 +125,19 @@ TurbulenzEngine.onload = function onloadFn() {
 			return body;
 		};
 
-		var belt;
-		belt = createBelt(0, 11, 7, 14, 0.5, 2);
-		world.addRigidBody(belt);
-
-		belt = createBelt(7, 14, 14, 11, 0.5, 2);
-		world.addRigidBody(belt);
-
-		belt = createBelt(12, 19, 20.5, 17, 0.5, 2);
-		world.addRigidBody(belt);
-
-		belt = createBelt(0, 22, 21, 22, 0.5, 2);
-		world.addRigidBody(belt);
-
-		belt = createBelt(20.5, 10.5, 10, 5, 0.5, -2);
-		world.addRigidBody(belt);
-
-		belt = createBelt(10, 5, 5, 5, 0.5, -2);
-		world.addRigidBody(belt);
+		world.addRigidBody(createBelt( 0, 11,  7, 14, 0.5,  2));
+		world.addRigidBody(createBelt( 7, 14, 12, 12, 0.5,  2));
+		world.addRigidBody(createBelt(12, 18, 20, 15, 0.5, 12));
+		world.addRigidBody(createBelt( 0, 22, 21, 22, 0.5,  2));
+		world.addRigidBody(createBelt(20, 10, 10,  5, 0.5, -2));
+		world.addRigidBody(createBelt(10,  5,  5,  5, 0.5, -2));
 
 		// Create lift and pusher bodies.
 		lift = phys2D.createRigidBody({
 			shapes: [
 				phys2D.createPolygonShape({
-					vertices: phys2D.createBoxVertices(9, 0.01)
+					vertices: phys2D.createBoxVertices(9, 0.01),
+					elasticity: 1
 				})
 			],
 			type: 'kinematic',
@@ -172,9 +161,11 @@ TurbulenzEngine.onload = function onloadFn() {
 			var shapes = bodies[name].shapes.map(function(shape) {
 				return shape.clone();
 			});
+			var element = null;
 			var body = phys2D.createRigidBody({
 				shapes: shapes,
-				position: [i * 0.9, 1]
+				position: [i * 0.9, 1],
+				userData: {element: element}
 			});
 			world.addRigidBody(body);
 			i++;

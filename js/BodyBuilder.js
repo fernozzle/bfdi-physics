@@ -20,18 +20,23 @@ BPT.BodyBuilder = (function() {
 			var shapes = shapeDefinitions.map(function(shapeDefinition) {
 				return createShape(shapeDefinition, bodyDefinition);
 			});
-			console.log(shapes);
 			var body = phys2D.createRigidBody({shapes: shapes});
 			body.alignWithOrigin();
+			body.userData = {margin: findMargin(body, bodyDefinition)};
 			bodies[bodyName] = body;
 		}
 		return bodies;
 	}
+	function findMargin(body, bodyDefinition) {
+		var bounds = body.computeWorldBounds();
+		var margin = bodyDefinition.margin || [0, 0];
+		return VMath.v2Sub(margin, [bounds[0], bounds[1]]);
+	}
 	function createShape(shapeDefinition, bodyDefinition) {
 		var material = phys2D.createMaterial({
-			elasticity: bodyDefinition.restitution,
+			elasticity:      bodyDefinition.restitution,
 			dynamicFriction: bodyDefinition.friction,
-			density: bodyDefinition.density,
+			density:         bodyDefinition.density,
 		});
 
 		if(shapeDefinitionIsCircle(shapeDefinition)) {
