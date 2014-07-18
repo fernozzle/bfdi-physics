@@ -14,17 +14,9 @@ TurbulenzEngine.onload = function onloadFn() {
 	var mathDevice = TurbulenzEngine.createMathDevice({});
 	var requestHandler = RequestHandler.create({});
 
-	var gameSession;
-	function sessionCreated(gameSession) {
-		TurbulenzServices.createMappingTable(requestHandler, gameSession, function (table) {
-		});
-	}
-	gameSession = TurbulenzServices.createGameSession(requestHandler, sessionCreated);
-
 	//==========================================================================
 	// Physics2D/Draw2D
 	//==========================================================================
-	// set up.
 	var phys2D = Physics2DDevice.create();
 
 	// size of physics stage.
@@ -101,10 +93,6 @@ TurbulenzEngine.onload = function onloadFn() {
 		[5, 5, 125, 125]
 	];
 
-	// Create a static body at (0, 0) with no rotation
-	// which we add to the world to use as the first body
-	// in hand constraint. We set anchor for this body
-	// as the cursor position in physics coordinates.
 	var handReferenceBody = phys2D.createRigidBody({
 		type: 'static'
 	});
@@ -325,10 +313,6 @@ TurbulenzEngine.onload = function onloadFn() {
 		if (handConstraint) {
 			body = handConstraint.bodyB;
 			handConstraint.setAnchorA(draw2D.viewportMap(mouseX, mouseY));
-
-			// Additional angular dampening of body being dragged.
-			// Helps it to settle quicker instead of spinning around
-			// the cursor.
 			body.setAngularVelocity(body.getAngularVelocity() * 0.9);
 		}
 
@@ -400,16 +384,9 @@ TurbulenzEngine.onload = function onloadFn() {
 	}
 	intervalID = TurbulenzEngine.setInterval(loadingLoop, 10);
 
-
-	// Create a scene destroy callback to run when the window is closed
 	TurbulenzEngine.onunload = function destroyScene() {
 		if (intervalID) {
 			TurbulenzEngine.clearInterval(intervalID);
-		}
-
-		if (gameSession) {
-			gameSession.destroy();
-			gameSession = null;
 		}
 	};
 };
