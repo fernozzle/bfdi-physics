@@ -42,17 +42,6 @@ TurbulenzEngine.onload = function onloadFn() {
 		gravity: [0, 20]
 	});
 
-	var rubberMaterial = phys2D.createMaterial({
-		elasticity: 0.9,
-		staticFriction: 6,
-		dynamicFriction: 4,
-		rollingFriction: 0.001
-	});
-
-	var heavyMaterial = phys2D.createMaterial({
-		density: 3
-	});
-
 	var conveyorBeltMaterial = phys2D.createMaterial({
 		elasticity: 0,
 		staticFriction: 10,
@@ -60,38 +49,11 @@ TurbulenzEngine.onload = function onloadFn() {
 		rollingFriction: 0.1
 	});
 
-	var shapeSize = 0.8;
-
-	var triangleShape = phys2D.createPolygonShape({
-		vertices: [[0,0], [1,0], [0,1]],
-		material: rubberMaterial
+	var bodies;
+	TurbulenzEngine.request("characters.json", function(jsonData) {
+		var bodyBuilder = BPT.BodyBuilder.create({phys2D: phys2D});
+		bodies = bodyBuilder.buildBodies(jsonData);
 	});
-	var center = triangleShape.computeCenterOfMass();
-	triangleShape.translate(VMath.v2Neg(center));
-
-	var shapeFactory = [
-		phys2D.createCircleShape({
-			radius: (shapeSize / 2),
-			material: rubberMaterial
-		}),
-		phys2D.createPolygonShape({
-			vertices: phys2D.createBoxVertices(shapeSize, shapeSize),
-			material: heavyMaterial
-		}),
-		phys2D.createPolygonShape({
-			vertices: phys2D.createRegularPolygonVertices(shapeSize, shapeSize, 4),
-			material: heavyMaterial
-		}),
-		triangleShape
-	];
-
-	// texture rectangles for above shapes.
-	var textureRectangles = [
-		[130, 130, 255, 255],
-		[5, 132, 125, 252],
-		[131, 3, 251, 123],
-		[5, 5, 125, 125]
-	];
 
 	var handReferenceBody = phys2D.createRigidBody({
 		type: 'static'
@@ -205,22 +167,17 @@ TurbulenzEngine.onload = function onloadFn() {
 		world.addRigidBody(pusher);
 		animationState = 0;
 
-		// Create piles of each factory shape.
-		var x, y;
-		var xCount = Math.floor(stageWidth / shapeSize);
-		for (x = 0; x < xCount; x += 1) {
-			for (y = 0; y < 4; y += 1) {
-				var index = (y % shapeFactory.length);
-				var shape = shapeFactory[index];
-				var body = phys2D.createRigidBody({
-					shapes: [shape.clone()],
-					position: [
-						(x + 0.5) * (stageWidth / xCount),
-						(y + 0.5) * shapeSize
-					]
-				});
-				world.addRigidBody(body);
-			}
+		var i = 0;
+		for (name in bodies) {
+			var shapes = bodies[name].shapes.map(function(shape) {
+				return shape.clone();
+			});
+			var body = phys2D.createRigidBody({
+				shapes: shapes,
+				position: [i * 0.9, 1]
+			});
+			world.addRigidBody(body);
+			i++;
 		}
 	}
 
@@ -378,6 +335,7 @@ TurbulenzEngine.onload = function onloadFn() {
 
 	var intervalID;
 	function loadingLoop() {
+		if(!bodies) return;
 		reset();
 		TurbulenzEngine.clearInterval(intervalID);
 		intervalID = TurbulenzEngine.setInterval(mainLoop, 1000 / 60);

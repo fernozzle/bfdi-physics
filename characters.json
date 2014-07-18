@@ -1,6 +1,6 @@
 {
 	"announcer": {
-		"density": 0.8,
+		"density": 8,
 		"friction": 0.1,
 		"restitution": 0.2,
 		"shapes": [[
@@ -10,7 +10,7 @@
 		"mirrorY": true
 	},
 	"blocky": {
-		"density": 0.6,
+		"density": 6,
 		"friction": 0.2,
 		"restitution": 0.6,
 		"shapes": [[
@@ -22,7 +22,7 @@
 		]]
 	},
 	"bomby": {
-		"density": 0.8,
+		"density": 8,
 		"friction": 0.3,
 		"restitution": 0.7,
 		"shapes": [
@@ -39,7 +39,7 @@
 		]
 	},
 	"book": {
-		"density": 0.7,
+		"density": 7,
 		"friction": 0.4,
 		"restitution": 0.3,
 		"shapes": [[
@@ -49,7 +49,7 @@
 		"mirrorY": true
 	},
 	"bubble": {
-		"density": 0.01,
+		"density": 0.1,
 		"friction": 0.01,
 		"restitution": 0.7,
 		"shapes": [
@@ -60,7 +60,7 @@
 		]
 	},
 	"coiny": {
-		"density": 0.3,
+		"density": 3,
 		"friction": 0.1,
 		"restitution": 0.7,
 		"shapes": [
@@ -72,7 +72,7 @@
 		"margin": [-0.02, 0.03]
 	},
 	"donut": {
-		"density": 0.5,
+		"density": 5,
 		"friction": 0.6,
 		"restitution": 0.3,
 		"shapes": [
@@ -83,7 +83,7 @@
 		]
 	},
 	"eraser": {
-		"density": 0.4,
+		"density": 4,
 		"friction": 0.9,
 		"restitution": 0.5,
 		"shapes": [[
@@ -95,7 +95,7 @@
 		"margin": [0, -0.02]
 	},
 	"firey": {
-		"density": 0.4,
+		"density": 4,
 		"friction": 0.2,
 		"restitution": 0.4,
 		"shapes": [
@@ -126,7 +126,7 @@
 		]
 	},
 	"flower": {
-		"density": 0.2,
+		"density": 2,
 		"friction": 0.6,
 		"restitution": 0.2,
 		"shapes": [
@@ -169,7 +169,7 @@
 		"margin": [0.04, 0]
 	},
 	"fries": {
-		"density": 0.3,
+		"density": 3,
 		"friction": 0.5,
 		"restitution": 0.2,
 		"shapes": [[
@@ -181,7 +181,7 @@
 		"margin": [0, 0.09]
 	},
 	"gelatin": {
-		"density": 0.3,
+		"density": 3,
 		"friction": 0.05,
 		"restitution": 0.2,
 		"shapes": [[
@@ -194,7 +194,7 @@
 		"mirrorX": true
 	},
 	"golf-ball": {
-		"density": 1.1,
+		"density": 8,
 		"friction": 0.2,
 		"restitution": 0.4,
 		"shapes": [
@@ -205,7 +205,7 @@
 		]
 	},
 	"ice-cube": {
-		"density": 0.9,
+		"density": 9,
 		"friction": 0.01,
 		"restitution": 0.1,
 		"shapes": [[
@@ -219,7 +219,7 @@
 		"margin": [0.01, 0.02]
 	},
 	"leafy": {
-		"density": 0.1,
+		"density": 1,
 		"friction": 0.2,
 		"restitution": 0.5,
 		"shapes": [[
@@ -232,7 +232,7 @@
 		"margin": [0, 2.2]
 	},
 	"match": {
-		"density": 0.3,
+		"density": 3,
 		"friction": 0.5,
 		"restitution": 0.8,
 		"shapes": [[
@@ -243,7 +243,7 @@
 		"margin": [0, 0.10]
 	},
 	"needle": {
-		"density": 0.9,
+		"density": 9,
 		"friction": 0.05,
 		"restitution": 0.85,
 		"shapes": [[
@@ -253,7 +253,7 @@
 		"mirrorX": true
 	},
 	"nickel": {
-		"density": 0.3,
+		"density": 3,
 		"friction": 0.1,
 		"restitution": 0.7,
 		"shapes": [
@@ -265,7 +265,7 @@
 		"margin": [-0.02, 0.03]
 	},
 	"pen": {
-		"density": 0.2,
+		"density": 2,
 		"friction": 0.2,
 		"restitution": 0.8,
 		"shapes": [
@@ -283,7 +283,7 @@
 		]
 	},
 	"pencil": {
-		"density": 0.3,
+		"density": 3,
 		"friction": 0.3,
 		"restitution": 0.7,
 		"shapes": [[
@@ -294,7 +294,7 @@
 		"mirrorX": true
 	},
 	"pin": {
-		"density": 0.7,
+		"density": 7,
 		"friction": 0.2,
 		"restitution": 0.6,
 		"shapes": [
@@ -310,7 +310,7 @@
 		"mirrorX": true
 	},
 	"puffball": {
-		"density": 0.5,
+		"density": 5,
 		"friction": 0.8,
 		"restitution": 0.2,
 		"shapes": [
@@ -322,7 +322,7 @@
 		"margin": [0.05, 0.05]
 	},
 	"rocky": {
-		"density": 1.4,
+		"density": 8,
 		"friction": 0.7,
 		"restitution": 0.5,
 		"shapes": [[
@@ -346,7 +346,7 @@
 		"mirrorX": true
 	},
 	"snowball": {
-		"density": 0.8,
+		"density": 7,
 		"friction": 0.3,
 		"restitution": 0.05,
 		"shapes": [
@@ -357,7 +357,7 @@
 		]
 	},
 	"spongy": {
-		"density": 0.3,
+		"density": 3,
 		"friction": 0.9,
 		"restitution": 0.8,
 		"shapes": [[
@@ -369,7 +369,7 @@
 		]]
 	},
 	"teardrop": {
-		"density": 0.7,
+		"density": 7,
 		"friction": 0.01,
 		"restitution": 0.7,
 		"shapes": [
@@ -386,7 +386,7 @@
 		]
 	},
 	"tennis-ball": {
-		"density": 0.5,
+		"density": 5,
 		"friction": 0.4,
 		"restitution": 0.9,
 		"shapes": [
@@ -397,7 +397,7 @@
 		]
 	},
 	"woody": {
-		"density": 0.2,
+		"density": 2,
 		"friction": 0.4,
 		"restitution": 0.7,
 		"shapes": [[
@@ -410,7 +410,7 @@
 		]]
 	},
 	"yellow-face": {
-		"density": 1,
+		"density": 3,
 		"friction": 0.3,
 		"restitution": 0.8,
 		"shapes": [[
