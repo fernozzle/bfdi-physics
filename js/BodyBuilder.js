@@ -34,16 +34,14 @@ BPT.BodyBuilder = (function() {
 		});
 		var body = phys2D.createRigidBody({shapes: shapes});
 		body.alignWithOrigin();
+		var bounds = body.computeWorldBounds();
 		body.userData = {
 			id: bodyDefinition.id,
-			margin: findMargin(body, bodyDefinition)
+			margin: bodyDefinition.margin || [0, 0],
+			topLeft: [bounds[0], bounds[1]],
+			zIndex: bodyDefinition.zIndex
 		};
 		return body;
-	}
-	function findMargin(body, bodyDefinition) {
-		var bounds = body.computeWorldBounds();
-		var margin = bodyDefinition.margin || [0, 0];
-		return VMath.v2Sub(margin, [bounds[0], bounds[1]]);
 	}
 	function createShape(shapeDefinition, bodyDefinition) {
 		var material = phys2D.createMaterial({

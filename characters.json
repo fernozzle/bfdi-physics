@@ -188,19 +188,20 @@
 			"restitution": 0.2,
 			"shapes": [[
 				[0.00, 0.00],
-				[0.10, 1.00]
+				[0.25, 1.42]
 			]],
 			"mirrorX": true,
-			"margin": [0.30, 0.03],
+			"margin": [0.00, 0.03],
 			"group": 4,
-			"mask": 5
+			"mask": 5,
+			"zIndex": -1
 		},
 		{
 			"constraint": "point",
 			"bodyA": 0,
 			"bodyB": 1,
-			"anchorA": [0.99, 1.56],
-			"anchorB": [0.10, -0.90]
+			"anchorA": [0.99, 1.00],
+			"anchorB": [0.10, -0.60]
 		}
 	],
 	[{

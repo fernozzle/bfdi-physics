@@ -137,14 +137,15 @@ function reset() {
 
 	function placeBody(body) {
 		var shapes = body.shapes.map(function(shape) {
-			console.log(shape.getMask());
 			return shape.clone();
 		});
 		var element = document.createElement('div');
 		element.className = 'body';
+		element.style.zIndex = body.userData.zIndex;
 		var image = document.createElement('img');
-		image.style.left = (-body.userData.margin[0] * graphicsScale) + 'px';
-		image.style.top  = (-body.userData.margin[1] * graphicsScale) + 'px';
+		var imageOffset = VMath.v2Sub(body.userData.topLeft, body.userData.margin);
+		image.style.left = (imageOffset[0] * graphicsScale) + 'px';
+		image.style.top  = (imageOffset[1] * graphicsScale) + 'px';
 		image.style.webkitTransform = 'scale(' + (graphicsScale / imageScale) + ')';
 		image.src = 'images/' + body.userData.id + '.png';
 		element.appendChild(image);
@@ -174,8 +175,8 @@ function reset() {
 					world.addConstraint(phys2D.createPointConstraint({
 						bodyA: placedBodies[a],
 						bodyB: placedBodies[b],
-						anchorA: VMath.v2Sub(member.anchorA, char[a].userData.margin),
-						anchorB: VMath.v2Sub(member.anchorB, char[b].userData.margin)
+						anchorA: VMath.v2Add(member.anchorA, char[a].userData.topLeft),
+						anchorB: VMath.v2Add(member.anchorB, char[b].userData.topLeft)
 					}));
 				}
 			});
