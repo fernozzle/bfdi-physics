@@ -135,7 +135,7 @@ function reset() {
 		animationState = 0;
 	}
 
-	function placeBody(body) {
+	function placeBody(body, position) {
 		var shapes = body.shapes.map(function(shape) {
 			return shape.clone();
 		});
@@ -153,10 +153,7 @@ function reset() {
 
 		var newBody = phys2D.createRigidBody({
 			shapes: shapes,
-			position: [
-				1 + (i      * 0.9),
-				3 + (repeat * 1)
-			],
+			position: position,
 			userData: {element: element}
 		});
 		world.addRigidBody(newBody);
@@ -166,9 +163,13 @@ function reset() {
 		var i = 0;
 		chars.forEach(function(char) {
 			var placedBodies = [];
+			var position = [
+				1 + (i * 0.9),
+				3 + (repeat * 1)
+			];
 			char.forEach(function(member) {
 				if (member.shapes) {
-					placedBodies.push(placeBody(member));
+					placedBodies.push(placeBody(member, position));
 				} else {
 					var a = member.bodyA;
 					var b = member.bodyB;
