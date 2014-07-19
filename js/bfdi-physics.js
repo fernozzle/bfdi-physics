@@ -163,18 +163,21 @@ function reset() {
 	for (var repeat = 0; repeat < 1; repeat++) {
 		var i = 0;
 		chars.forEach(function(char) {
-			if (char.length === 1) {
-				placeBody(char[0]);
-			} else {
-				var bodyA = placeBody(char[0]);
-				var bodyB = placeBody(char[1]);
-				world.addConstraint(phys2D.createPointConstraint({
-					bodyA: bodyA,
-					bodyB: bodyB,
-					anchorA: VMath.v2Sub(char[2].anchorA, char[0].userData.margin),
-					anchorB: VMath.v2Sub(char[2].anchorB, char[1].userData.margin),
-				}));
-			}
+			var placedBodies = [];
+			char.forEach(function(member) {
+				if (member.shapes) {
+					placedBodies.push(placeBody(member));
+				} else {
+					var a = member.bodyA;
+					var b = member.bodyB;
+					world.addConstraint(phys2D.createPointConstraint({
+						bodyA: placedBodies[a],
+						bodyB: placedBodies[b],
+						anchorA: VMath.v2Sub(member.anchorA, char[a].userData.margin),
+						anchorB: VMath.v2Sub(member.anchorB, char[b].userData.margin)
+					}));
+				}
+			});
 			i++;
 		});
 	}

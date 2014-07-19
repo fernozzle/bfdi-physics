@@ -192,6 +192,9 @@
 			"margin": [0.01, 0.03]
 		},
 		{
+			"constraint": "point",
+			"bodyA": 0,
+			"bodyB": 1,
 			"anchorA": [0.99, 1.56],
 			"anchorB": [0.20, -0.30]
 		}
