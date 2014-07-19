@@ -163,16 +163,61 @@ function reset() {
 			i++;
 		}
 	}
+	var mouseDown = function(e) {
+		if (handConstraint) return;
+
+		var point = [e.clientX, e.clientY];
+		VMath.v2ScalarMul(point, 1 / graphicsScale, point);
+
+		var bodies = [];
+		world.bodyPointQuery(point, bodies);
+		if (bodies[0] && bodies[0].isDynamic()) {
+			handConstraint = phys2D.createPointConstraint({
+				bodyA: handReferenceBody,
+				bodyB: bodies[0],
+				anchorA: point,
+				anchorB: bodies[0].transformWorldPointToLocal(point),
+				stiff: false,
+				maxForce: 1e5
+			});
+			world.addConstraint(handConstraint);
+		}
+
+		return false;
+	}
+	var mouseMove = function(e) {
+		if (!handConstraint) return;
+
+		var point = [e.clientX, e.clientY];
+		VMath.v2ScalarMul(point, 1 / graphicsScale, point);
+
+		handConstraint.setAnchorA(point);
+	}
+	var mouseUp = function(e) {
+		if (handConstraint) {
+			world.removeConstraint(handConstraint);
+			handConstraint = null;
+		}
+	}
+	stageElement.onmousedown = mouseDown;
+	stageElement.onmousemove = mouseMove;
+	stageElement.onmouseup = mouseUp;
+	stageElement.ontouchstart = function(e) {
+		return mouseDown(e.touches[0]);
+	}
+	stageElement.ontouchmove = function(e) {
+		return mouseMove(e.touches[0]);
+	}
+	stageElement.ontouchend = function(e) {
+		return mouseUp(e.touches[0]);
+	}
 }
 
 var update = function() {
 	if (handConstraint) {
-		handConstraint.setAnchorA(draw2D.viewportMap(mouseX, mouseY));
-
 		var body = handConstraint.bodyB;
 		body.setAngularVelocity(body.getAngularVelocity() * 0.9);
 	}
-
 	if (machineryEnabled) {
 		if (animationState === 0) {
 			// Start of animation, set velocity of lift to move up to the target
