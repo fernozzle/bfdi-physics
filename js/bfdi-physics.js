@@ -257,7 +257,9 @@ var update = function() {
 	}
 
 	var position;
-	world.rigidBodies.forEach(function(body) {
+	var body;
+	for (var i = 0; i < world.rigidBodies.length; i++) {
+		body = world.rigidBodies[i];
 		if (body.userData) {
 			position = body.getPosition();
 			body.userData.element.style.webkitTransform =
@@ -266,7 +268,7 @@ var update = function() {
 					(position[1] * graphicsScale) + 'px,0)' +
 				'rotate(' + (degreesPerRadian * body.getRotation()) + 'deg)';
 		}
-	});
+	}
 	world.step(1 / framerate);
 
 	var currentTime = Date.now()
