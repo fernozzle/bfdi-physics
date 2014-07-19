@@ -229,7 +229,7 @@
 		]],
 		"mirrorX": true,
 		"mirrorY": true,
-		"margin": [0, 2.2]
+		"margin": [0, 0.02]
 	},
 	"match": {
 		"density": 3,

@@ -1,28 +1,49 @@
 <html>
 	<head>
 		<title>BFDI Physics Toy</title>
-		<meta name="viewport" content="user-scalable = no, initial-scale = 1" />
 		<style>
-			#canvas {
+			body {
+				overflow: hidden;
+				background: #eee;
+			}
+			#fps {
+				position: absolute;
+				left: 10px;
+				bottom: 10px;
+				margin: 0;
+				font-family: Consolas, monospace;
+			}
+			#stage {
 				position: absolute;
 				left: 0;
 				top:  0;
+				background: #fff;
 			}
 			.body {
 				position: absolute;
 				left: 0;
 				top:  0;
-				width:  10px;
-				height: 10px;
-				background: red;
 			}
 			.body > img {
+				-webkit-transform-origin: top left;
+				display: block;
 				position: absolute;
+			}
+			.rect, .belt {
+				position: absolute;
+				left: 0;
+				top: 0;
+				-webkit-transform-origin: top left;
+				background: rgba(0, 0, 0, 0.5);
+			}
+			.belt {
+				border-radius: 500px;
 			}
 		</style>
 	</head>
 	<body>
 		<div id="stage"></div>
+		<pre id="fps"></pre>
 
 		<script src="js/turbulenz/debug.js"></script>
 		<script src="js/turbulenz/vmath.js"></script>

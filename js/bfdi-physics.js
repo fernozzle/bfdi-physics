@@ -1,10 +1,15 @@
-var graphicsScale = 50;
+var stageWidth  = 30;
+var stageHeight = 22;
+
+var imageScale    = 50; // Size of image dimensions compared to defined shapes
+var graphicsScale = 40;  // Size to display bodies compared to defined shapes
 var stageElement = document.getElementById('stage');
+stageElement.style.width  = stageWidth  * graphicsScale + 'px';
+stageElement.style.height = stageHeight * graphicsScale + 'px';
+var degreesPerRadian = 57.2957795;
 
 var phys2D = Physics2DDevice.create();
-
-var stageWidth  = document.body.clientWidth  / graphicsScale;
-var stageHeight = document.body.clientHeight / graphicsScale;
+var framerate = 60;
 
 var world = phys2D.createWorld({gravity: [0, 20]});
 
@@ -22,6 +27,9 @@ var handConstraint = null;
 var animationState = 0;
 var lift;
 var pusher;
+
+var previousTime = Date.now();
+var fpsElement = document.getElementById('fps');
 
 function reset() {
 	world.clear();
@@ -49,7 +57,20 @@ function reset() {
 
 	var createBelt = function createBeltFn(x1, y1, x2, y2, radius, speed) {
 		var normal = VMath.v2Build(y2 - y1, x1 - x2);
-		VMath.v2ScalarMul(normal, radius / VMath.v2Length(normal), normal);
+		var length = VMath.v2Length(normal);
+		VMath.v2ScalarMul(normal, radius / length, normal);
+
+		var element = document.createElement('div');
+		element.className = 'belt';
+		element.style.width  = ((length + 2 * radius) * graphicsScale) + 'px';
+		element.style.height = (radius * 2 * graphicsScale) + 'px';
+		element.style.webkitTransform =
+			'translate(' +
+				((x1 + normal[0] + normal[1]) * graphicsScale) + 'px,' +
+				((y1 + normal[1] - normal[0]) * graphicsScale) + 'px)' +
+			'rotate(' +
+				(degreesPerRadian * Math.atan2(y2 - y1, x2 - x1)) + 'deg)';
+		stageElement.appendChild(element);
 
 		var shapes = [
 			phys2D.createPolygonShape({
@@ -110,23 +131,33 @@ function reset() {
 	world.addRigidBody(pusher);
 	animationState = 0;
 
-	var i = 0;
-	for (name in bodies) {
-		var shapes = bodies[name].shapes.map(function(shape) {
-			return shape.clone();
-		});
-		var element = document.createElement('div');
-		element.className = 'body';
-		var image = document.createElement('img');
-		element.appendChild(image);
-		stageElement.appendChild(element);
+	for (var repeat = 0; repeat < 1; repeat++) {
+		var i = 0;
+		for (name in bodies) {
+			var body = bodies[name];
+			var shapes = body.shapes.map(function(shape) {
+				return shape.clone();
+			});
+			var element = document.createElement('div');
+			element.className = 'body';
+			var image = document.createElement('img');
+			image.style.left = (-body.userData.margin[0] * graphicsScale) + 'px';
+			image.style.top  = (-body.userData.margin[1] * graphicsScale) + 'px';
+			image.style.webkitTransform = 'scale(' + (graphicsScale / imageScale) + ')';
+			image.src = 'images/' + name + '.png';
+			element.appendChild(image);
+			stageElement.appendChild(element);
 
-		world.addRigidBody(phys2D.createRigidBody({
-			shapes: shapes,
-			position: [i * 0.9, 1],
-			userData: {element: element}
-		}));
-		i++;
+			world.addRigidBody(phys2D.createRigidBody({
+				shapes: shapes,
+				position: [
+					1 + (i      * 0.9),
+					3 + (repeat * 1)
+				],
+				userData: {element: element}
+			}));
+			i++;
+		}
 	}
 }
 
@@ -173,19 +204,32 @@ var update = function() {
 			animationState = 0;
 		}
 	}
+
+	var position;
 	world.rigidBodies.forEach(function(body) {
 		if (body.userData) {
-			var element = body.userData.element;
-			var position = body.getPosition();
-			var rotation = body.getRotation();
-			element.style.transform =
-				'translate(' +
-					(position[0] * graphicsScale) + 'px, ' +
-					(position[1] * graphicsScale) + 'px) ' +
-				'rotate(' + (57.2957795 * rotation) + 'deg)';
+			position = body.getPosition();
+			body.userData.element.style.webkitTransform =
+				'translate3d(' +
+					(position[0] * graphicsScale) + 'px,' +
+					(position[1] * graphicsScale) + 'px,0)' +
+				'rotate(' + (degreesPerRadian * body.getRotation()) + 'deg)';
 		}
 	});
-	world.step(1 / 60);
+	world.step(1 / framerate);
+
+	var currentTime = Date.now()
+	var secondsElapsed = (currentTime - previousTime) / 1000;
+	var fps = 1 / secondsElapsed;
+	var footageSeconds = 60;
+	var renderSeconds = secondsElapsed * footageSeconds * framerate;
+	fpsElement.innerHTML =
+		('   ' + fps.toFixed(1)).substr(-5, 5) + 'fps | ' +
+		footageSeconds + 's @ ' + framerate + 'fps &rarr; ' +
+		(renderSeconds / 60 / 60).toFixed(2) + ' hours (' +
+		(renderSeconds / 60).toFixed(1) + ' minutes)';
+	previousTime = currentTime;
+
 	requestAnimFrame(update);
 }
 
