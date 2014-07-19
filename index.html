@@ -2,8 +2,28 @@
 	<head>
 		<title>BFDI Physics Toy</title>
 		<meta name="viewport" content="user-scalable = no, initial-scale = 1" />
+		<style>
+			#canvas {
+				position: absolute;
+				left: 0;
+				top:  0;
+			}
+			.body {
+				position: absolute;
+				left: 0;
+				top:  0;
+				width:  10px;
+				height: 10px;
+				background: red;
+			}
+			.body > img {
+				position: absolute;
+			}
+		</style>
 	</head>
 	<body>
+		<div id="stage"></div>
+
 		<script src="js/turbulenz/debug.js"></script>
 		<script src="js/turbulenz/vmath.js"></script>
 		<script src="js/turbulenz/boxtree.js"></script>

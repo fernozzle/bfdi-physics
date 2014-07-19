@@ -1,11 +1,12 @@
+var graphicsScale = 50;
+var stageElement = document.getElementById('stage');
+
 var phys2D = Physics2DDevice.create();
 
-var stageWidth = 30;
-var stageHeight = 22;
+var stageWidth  = document.body.clientWidth  / graphicsScale;
+var stageHeight = document.body.clientHeight / graphicsScale;
 
-var world = phys2D.createWorld({
-	gravity: [0, 20]
-});
+var world = phys2D.createWorld({gravity: [0, 20]});
 
 var conveyorBeltMaterial = phys2D.createMaterial({
 	elasticity: 0,
@@ -13,7 +14,6 @@ var conveyorBeltMaterial = phys2D.createMaterial({
 	dynamicFriction: 8,
 	rollingFriction: 0.1
 });
-
 
 var handReferenceBody = phys2D.createRigidBody({type: 'static'});
 world.addRigidBody(handReferenceBody);
@@ -115,7 +115,12 @@ function reset() {
 		var shapes = bodies[name].shapes.map(function(shape) {
 			return shape.clone();
 		});
-		var element = null;
+		var element = document.createElement('div');
+		element.className = 'body';
+		var image = document.createElement('img');
+		element.appendChild(image);
+		stageElement.appendChild(element);
+
 		world.addRigidBody(phys2D.createRigidBody({
 			shapes: shapes,
 			position: [i * 0.9, 1],
@@ -168,6 +173,18 @@ var update = function() {
 			animationState = 0;
 		}
 	}
+	world.rigidBodies.forEach(function(body) {
+		if (body.userData) {
+			var element = body.userData.element;
+			var position = body.getPosition();
+			var rotation = body.getRotation();
+			element.style.transform =
+				'translate(' +
+					(position[0] * graphicsScale) + 'px, ' +
+					(position[1] * graphicsScale) + 'px) ' +
+				'rotate(' + (57.2957795 * rotation) + 'deg)';
+		}
+	});
 	world.step(1 / 60);
 	requestAnimFrame(update);
 }
