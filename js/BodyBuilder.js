@@ -7,32 +7,39 @@ BPT.BodyBuilder = (function() {
 		phys2D = params.phys2D;
 		return bodyBuilder;
 	}
-	BodyBuilder.prototype.buildBodies = function(jsonData) {
-		var bodyDefinitions = JSON.parse(jsonData);
-		return bodyDefinitions.map(function(bodyDefinition) {
-			var shapeDefinitions = bodyDefinition.shapes.map(function(shape){
-				if (shapeDefinitionIsCircle(shape)) {
-					return shape;
-				} else {
-					return mirrorPolygon(
-						shape,
-						bodyDefinition.mirrorX,
-						bodyDefinition.mirrorY
-					);
-				}
-			});
-
-			var shapes = shapeDefinitions.map(function(shapeDefinition) {
-				return createShape(shapeDefinition, bodyDefinition);
-			});
-			var body = phys2D.createRigidBody({shapes: shapes});
-			body.alignWithOrigin();
-			body.userData = {
-				id: bodyDefinition.id,
-				margin: findMargin(body, bodyDefinition)
-			};
-			return body;
+	BodyBuilder.prototype.buildChars = function(jsonData) {
+		var charDefinitions = JSON.parse(jsonData);
+		return charDefinitions.map(function(charDefinition) {
+			return charDefinition.map(createBody);
 		});
+	}
+	function createBody(bodyDefinition) {
+		// Leave hinges untouched
+		if (!bodyDefinition.id) return bodyDefinition;
+
+		var shapeDefinitions = bodyDefinition.shapes.map(function(shape){
+			if (shapeDefinitionIsCircle(shape)) {
+				return shape;
+			} else {
+				return mirrorPolygon(
+					shape,
+					bodyDefinition.mirrorX,
+					bodyDefinition.mirrorY
+				);
+			}
+		});
+
+		var shapes = shapeDefinitions.map(function(shapeDefinition) {
+			return createShape(shapeDefinition, bodyDefinition);
+		});
+		var body = phys2D.createRigidBody({shapes: shapes});
+		body.alignWithOrigin();
+		body.userData = {
+			id: bodyDefinition.id,
+			margin: findMargin(body, bodyDefinition),
+			//hinge: bodyDefinition.hinge
+		};
+		return body;
 	}
 	function findMargin(body, bodyDefinition) {
 		var bounds = body.computeWorldBounds();

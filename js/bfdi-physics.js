@@ -135,30 +135,46 @@ function reset() {
 		animationState = 0;
 	}
 
+	function placeBody(body) {
+		var shapes = body.shapes.map(function(shape) {
+			return shape.clone();
+		});
+		var element = document.createElement('div');
+		element.className = 'body';
+		var image = document.createElement('img');
+		image.style.left = (-body.userData.margin[0] * graphicsScale) + 'px';
+		image.style.top  = (-body.userData.margin[1] * graphicsScale) + 'px';
+		image.style.webkitTransform = 'scale(' + (graphicsScale / imageScale) + ')';
+		image.src = 'images/' + body.userData.id + '.png';
+		element.appendChild(image);
+		stageElement.appendChild(element);
+
+		var newBody = phys2D.createRigidBody({
+			shapes: shapes,
+			position: [
+				1 + (i      * 0.9),
+				3 + (repeat * 1)
+			],
+			userData: {element: element}
+		});
+		world.addRigidBody(newBody);
+		return newBody;
+	}
 	for (var repeat = 0; repeat < 1; repeat++) {
 		var i = 0;
-		bodies.forEach(function(body) {
-			var shapes = body.shapes.map(function(shape) {
-				return shape.clone();
-			});
-			var element = document.createElement('div');
-			element.className = 'body';
-			var image = document.createElement('img');
-			image.style.left = (-body.userData.margin[0] * graphicsScale) + 'px';
-			image.style.top  = (-body.userData.margin[1] * graphicsScale) + 'px';
-			image.style.webkitTransform = 'scale(' + (graphicsScale / imageScale) + ')';
-			image.src = 'images/' + body.userData.id + '.png';
-			element.appendChild(image);
-			stageElement.appendChild(element);
-
-			world.addRigidBody(phys2D.createRigidBody({
-				shapes: shapes,
-				position: [
-					1 + (i      * 0.9),
-					3 + (repeat * 1)
-				],
-				userData: {element: element}
-			}));
+		chars.forEach(function(char) {
+			if (char.length === 1) {
+				placeBody(char[0]);
+			} else {
+				var bodyA = placeBody(char[0]);
+				var bodyB = placeBody(char[1]);
+				world.addConstraint(phys2D.createPointConstraint({
+					bodyA: bodyA,
+					bodyB: bodyB,
+					anchorA: VMath.v2Sub(char[2].anchorA, char[0].userData.margin),
+					anchorB: VMath.v2Sub(char[2].anchorB, char[1].userData.margin),
+				}));
+			}
 			i++;
 		});
 	}
@@ -295,12 +311,12 @@ window.requestAnimFrame = (function(){
 	        };
 })();
 
-var bodies;
+var chars;
 var request = new XMLHttpRequest();
 request.open("GET", "characters.json");
 request.onload = function() {
 	var bodyBuilder = BPT.BodyBuilder.create({phys2D: phys2D});
-	bodies = bodyBuilder.buildBodies(request.responseText);
+	chars = bodyBuilder.buildChars(request.responseText);
 
 	reset();
 	requestAnimFrame(update);
