@@ -200,8 +200,16 @@
 			"constraint": "point",
 			"bodyA": 0,
 			"bodyB": 1,
-			"anchorA": [0.99, 1.00],
+			"anchorA": [0.79, 1.00],
 			"anchorB": [0.10, -0.60]
+		},
+		{
+			"constraint": "point",
+			"bodyA": 0,
+			"bodyB": 1,
+			"anchorA": [0.79, 1.60],
+			"anchorB": [0.10, 0.00],
+			"stiff": false
 		}
 	],
 	[{

@@ -176,7 +176,8 @@ function reset() {
 						bodyA: placedBodies[a],
 						bodyB: placedBodies[b],
 						anchorA: VMath.v2Add(member.anchorA, char[a].userData.topLeft),
-						anchorB: VMath.v2Add(member.anchorB, char[b].userData.topLeft)
+						anchorB: VMath.v2Add(member.anchorB, char[b].userData.topLeft),
+						stiff: member.stiff
 					}));
 				}
 			});
