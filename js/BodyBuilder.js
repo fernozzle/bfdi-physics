@@ -36,8 +36,7 @@ BPT.BodyBuilder = (function() {
 		body.alignWithOrigin();
 		body.userData = {
 			id: bodyDefinition.id,
-			margin: findMargin(body, bodyDefinition),
-			//hinge: bodyDefinition.hinge
+			margin: findMargin(body, bodyDefinition)
 		};
 		return body;
 	}
@@ -57,12 +56,16 @@ BPT.BodyBuilder = (function() {
 			return phys2D.createCircleShape({
 				radius: shapeDefinition.radius,
 				origin: shapeDefinition.origin,
-				material: material
+				material: material,
+				group: bodyDefinition.group,
+				mask:  bodyDefinition.mask
 			});
 		} else {
 			return phys2D.createPolygonShape({
 				vertices: shapeDefinition,
-				material: material
+				material: material,
+				group: bodyDefinition.group,
+				mask:  bodyDefinition.mask
 			});
 		}
 	}

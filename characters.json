@@ -177,7 +177,9 @@
 					[0.01, 1.06]
 				]
 			],
-			"margin": [0.04, 0]
+			"margin": [0.04, 0],
+			"group": 2,
+			"mask": 3
 		},
 		{
 			"id": "flower-body",
@@ -186,17 +188,19 @@
 			"restitution": 0.2,
 			"shapes": [[
 				[0.00, 0.00],
-				[0.20, 1.42]
+				[0.10, 1.00]
 			]],
 			"mirrorX": true,
-			"margin": [0.01, 0.03]
+			"margin": [0.30, 0.03],
+			"group": 4,
+			"mask": 5
 		},
 		{
 			"constraint": "point",
 			"bodyA": 0,
 			"bodyB": 1,
 			"anchorA": [0.99, 1.56],
-			"anchorB": [0.20, -0.30]
+			"anchorB": [0.10, -0.90]
 		}
 	],
 	[{

@@ -137,6 +137,7 @@ function reset() {
 
 	function placeBody(body) {
 		var shapes = body.shapes.map(function(shape) {
+			console.log(shape.getMask());
 			return shape.clone();
 		});
 		var element = document.createElement('div');
