@@ -8,24 +8,31 @@ BPT.BodyBuilder = (function() {
 		return bodyBuilder;
 	}
 	BodyBuilder.prototype.buildBodies = function(jsonData) {
-		var bodies = {};
 		var bodyDefinitions = JSON.parse(jsonData);
-		for (var bodyName in bodyDefinitions) {
-			var bodyDefinition = bodyDefinitions[bodyName];
-			var shapeDefinitions = processShapeDefinitions(
-				bodyDefinition.shapes,
-				bodyDefinition
-			);
+		return bodyDefinitions.map(function(bodyDefinition) {
+			var shapeDefinitions = bodyDefinition.shapes.map(function(shape){
+				if (shapeDefinitionIsCircle(shape)) {
+					return shape;
+				} else {
+					return mirrorPolygon(
+						shape,
+						bodyDefinition.mirrorX,
+						bodyDefinition.mirrorY
+					);
+				}
+			});
 
 			var shapes = shapeDefinitions.map(function(shapeDefinition) {
 				return createShape(shapeDefinition, bodyDefinition);
 			});
 			var body = phys2D.createRigidBody({shapes: shapes});
 			body.alignWithOrigin();
-			body.userData = {margin: findMargin(body, bodyDefinition)};
-			bodies[bodyName] = body;
-		}
-		return bodies;
+			body.userData = {
+				id: bodyDefinition.id,
+				margin: findMargin(body, bodyDefinition)
+			};
+			return body;
+		});
 	}
 	function findMargin(body, bodyDefinition) {
 		var bounds = body.computeWorldBounds();
@@ -51,21 +58,6 @@ BPT.BodyBuilder = (function() {
 				material: material
 			});
 		}
-	}
-	function processShapeDefinitions(shapeDefinitions, bodyDefinition) {
-		// Mirror polygons
-		shapeDefinitions = shapeDefinitions.map(function(shape) {
-			if (shapeDefinitionIsCircle(shape)) {
-				return shape;
-			} else {
-				return mirrorPolygon(
-					shape,
-					bodyDefinition.mirrorX,
-					bodyDefinition.mirrorY
-				);
-			}
-		});
-		return shapeDefinitions;
 	}
 	function mirrorPolygon(vertices, mirrorX, mirrorY) {
 		var newVertices = [];

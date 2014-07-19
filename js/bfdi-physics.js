@@ -137,8 +137,7 @@ function reset() {
 
 	for (var repeat = 0; repeat < 1; repeat++) {
 		var i = 0;
-		for (name in bodies) {
-			var body = bodies[name];
+		bodies.forEach(function(body) {
 			var shapes = body.shapes.map(function(shape) {
 				return shape.clone();
 			});
@@ -148,7 +147,7 @@ function reset() {
 			image.style.left = (-body.userData.margin[0] * graphicsScale) + 'px';
 			image.style.top  = (-body.userData.margin[1] * graphicsScale) + 'px';
 			image.style.webkitTransform = 'scale(' + (graphicsScale / imageScale) + ')';
-			image.src = 'images/' + name + '.png';
+			image.src = 'images/' + body.userData.id + '.png';
 			element.appendChild(image);
 			stageElement.appendChild(element);
 
@@ -161,7 +160,7 @@ function reset() {
 				userData: {element: element}
 			}));
 			i++;
-		}
+		});
 	}
 	var mouseDown = function(e) {
 		if (handConstraint) return;
