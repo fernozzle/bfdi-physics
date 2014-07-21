@@ -66,12 +66,15 @@ function reset() {
 		element.className = 'belt';
 		element.style.width  = ((length + 2 * radius) * graphicsScale) + 'px';
 		element.style.height = (radius * 2 * graphicsScale) + 'px';
-		element.style.webkitTransform =
+		var transformString = 
 			'translate(' +
 				((x1 + normal[0] + normal[1]) * graphicsScale) + 'px,' +
 				((y1 + normal[1] - normal[0]) * graphicsScale) + 'px)' +
 			'rotate(' +
 				(degreesPerRadian * Math.atan2(y2 - y1, x2 - x1)) + 'deg)';
+		element.style.webkitTransform = transformString;
+		element.style.mozTransform = transformString;
+		element.style.transform = transformString;
 		stageElement.appendChild(element);
 
 		var shapes = [
@@ -146,7 +149,10 @@ function reset() {
 		var imageOffset = VMath.v2Sub(body.userData.topLeft, body.userData.margin);
 		image.style.left = (imageOffset[0] * graphicsScale) + 'px';
 		image.style.top  = (imageOffset[1] * graphicsScale) + 'px';
-		image.style.webkitTransform = 'scale(' + (graphicsScale / imageScale) + ')';
+		var transformString = 'scale(' + (graphicsScale / imageScale) + ')';
+		image.style.webkitTransform = transformString;
+		image.style.mozTransform    = transformString;
+		image.style.transform       = transformString;
 		image.src = 'images/' + body.userData.id + '.png';
 		element.appendChild(image);
 		stageElement.appendChild(element);
@@ -279,16 +285,19 @@ var update = function() {
 	}
 
 	var position;
-	var body;
+	var body, transformString;
 	for (var i = 0; i < world.rigidBodies.length; i++) {
 		body = world.rigidBodies[i];
 		if (body.userData) {
 			position = body.getPosition();
-			body.userData.element.style.webkitTransform =
+			transformString = 
 				'translate3d(' +
 					(position[0] * graphicsScale) + 'px,' +
 					(position[1] * graphicsScale) + 'px,0)' +
 				'rotate(' + (degreesPerRadian * body.getRotation()) + 'deg)';
+			body.userData.element.style.webkitTransform = transformString;
+			body.userData.element.style.mozTransform    = transformString;
+			body.userData.element.style.transform       = transformString;
 		}
 	}
 	world.step(1 / framerate);
