@@ -1,3 +1,3 @@
 function DisplayElement(element) {
-  this.element = element;
+	this.element = element;
 }

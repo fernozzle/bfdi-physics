@@ -1,5 +1,6 @@
-function PhysicsSyncSystem() {
+function PhysicsSyncSystem(physicsWorld) {
 	var _nodes;
+	var _physicsWorld = physicsWorld;
 
 	// System Functions
 	this.setup = function(game) {
@@ -11,7 +12,7 @@ function PhysicsSyncSystem() {
 			var node = _nodes.at(i);
 
 			var transform = node.transform;
-			var body = node.physicsBody;
+			var body = node.physicsBody.body;
 			VMath.v2Copy(body.getPosition(), transform.position);
 			transform.rotation = body.getRotation();
 		}

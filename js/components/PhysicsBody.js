@@ -1,3 +1,3 @@
 function PhysicsBody(body) {
-  this.body = body;
+	this.body = body;
 }

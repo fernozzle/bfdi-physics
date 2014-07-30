@@ -1,4 +1,4 @@
 function Transform(position, rotation) {
-	this.position = VMath.v2Copy(position);
+	this.position = position;
 	this.rotation = rotation;
 }

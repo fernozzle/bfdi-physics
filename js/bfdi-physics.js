@@ -34,7 +34,10 @@ var previousTime = Date.now();
 var fpsElement = document.getElementById('fps');
 
 var game = new ash.Game();
+game.addSystem(new PhysicsSyncSystem(), 1);
+game.addSystem(new ElementSyncSystem(stageElement, graphicsScale), 2);
 
+var creator = new EntityCreator(game);
 
 function reset() {
 	world.clear();
@@ -158,7 +161,6 @@ function reset() {
 		image.style.transform       = transformString;
 		image.src = 'images/' + body.userData.id + '.png';
 		element.appendChild(image);
-		stageElement.appendChild(element);
 
 		var newBody = phys2D.createRigidBody({
 			shapes: shapes,
@@ -166,6 +168,9 @@ function reset() {
 			userData: {element: element}
 		});
 		world.addRigidBody(newBody);
+
+		creator.createBody(newBody, element);
+
 		return newBody;
 	}
 	for (var repeat = 0; repeat < 1; repeat++) {
@@ -177,7 +182,7 @@ function reset() {
 				3 + (repeat * 1)
 			];
 			char.forEach(function(member) {
-				if (member.shapes) {
+				if (member.shapes) { // Is this a body or a constraint?
 					placedBodies.push(placeBody(member, position));
 				} else {
 					var a = member.bodyA;
@@ -287,23 +292,8 @@ var update = function() {
 		}
 	}
 
-	var position;
-	var body, transformString;
-	for (var i = 0; i < world.rigidBodies.length; i++) {
-		body = world.rigidBodies[i];
-		if (body.userData) {
-			position = body.getPosition();
-			transformString = 
-				'translate3d(' +
-					(position[0] * graphicsScale) + 'px,' +
-					(position[1] * graphicsScale) + 'px,0)' +
-				'rotate(' + (degreesPerRadian * body.getRotation()) + 'deg)';
-			body.userData.element.style.webkitTransform = transformString;
-			body.userData.element.style.mozTransform    = transformString;
-			body.userData.element.style.transform       = transformString;
-		}
-	}
 	world.step(1 / framerate);
+	game.update();
 
 	var currentTime = Date.now()
 	var secondsElapsed = (currentTime - previousTime) / 1000;
