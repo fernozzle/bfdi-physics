@@ -33,6 +33,9 @@ var pusher;
 var previousTime = Date.now();
 var fpsElement = document.getElementById('fps');
 
+var game = new ash.Game();
+
+
 function reset() {
 	world.clear();
 	handConstraint = null;
