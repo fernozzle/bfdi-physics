@@ -37,7 +37,7 @@ BPT.BodyBuilder = (function() {
 		var bounds = body.computeWorldBounds();
 		body.userData = {
 			id: bodyDefinition.id,
-			margin: bodyDefinition.margin || [0, 0],
+			imageOffset: bodyDefinition.imageOffset || [0, 0],
 			topLeft: [bounds[0], bounds[1]],
 			zIndex: bodyDefinition.zIndex
 		};

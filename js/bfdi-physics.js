@@ -152,7 +152,7 @@ function reset() {
 		element.className = 'body';
 		element.style.zIndex = body.userData.zIndex;
 		var image = document.createElement('img');
-		var imageOffset = VMath.v2Sub(body.userData.topLeft, body.userData.margin);
+		var imageOffset = VMath.v2Add(body.userData.topLeft, body.userData.imageOffset);
 		image.style.left = (imageOffset[0] * graphicsScale) + 'px';
 		image.style.top  = (imageOffset[1] * graphicsScale) + 'px';
 		var transformString = 'scale(' + (graphicsScale / imageScale) + ')';
