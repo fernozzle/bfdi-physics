@@ -1,6 +1,6 @@
 var BodyBuilder = (function() {
 	return {
-		createBody: function(bodyDef) {
+		createBody: function(bodyDef, phys2D) {
 			// Mirror polygonal shape defs
 			var shapeDefs = bodyDef.shapes.map(function(shapeDef){
 				// Circles are untouched
@@ -10,7 +10,7 @@ var BodyBuilder = (function() {
 
 			// Create shapes
 			var shapes = shapeDefs.map(function(shapeDef) {
-				return createShape(shapeDef, bodyDef);
+				return createShape(shapeDef, bodyDef, phys2D);
 			});
 
 			// Create body
@@ -28,7 +28,7 @@ var BodyBuilder = (function() {
 		}
 	};
 
-	function createShape(shapeDef, bodyDef) {
+	function createShape(shapeDef, bodyDef, phys2D) {
 		var material = phys2D.createMaterial({
 			elasticity:      bodyDef.restitution,
 			dynamicFriction: bodyDef.friction,

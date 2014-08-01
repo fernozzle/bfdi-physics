@@ -40,7 +40,7 @@ function createPhysicsRepresentation(prop) {
 	prop.bodies.forEach(function(body, bodyIndex) {
 		var bodyDef = propDef.bodies[bodyIndex];
 
-		var physicsBody = BodyBuilder.createBody(bodyDef);
+		var physicsBody = BodyBuilder.createBody(bodyDef, phys2D);
 		physicsBody.setPosition(body.position);
 		physicsBody.setRotation(body.rotation);
 		physicsBody.setVelocity(body.velocity);
