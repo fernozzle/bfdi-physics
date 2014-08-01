@@ -1,6 +1,5 @@
-[
 {
-	"id": "announcer",
+"announcer": {
 	"bodies": [{
 		"density": 8,
 		"friction": 0.1,
@@ -12,8 +11,7 @@
 		"mirrorY": true
 	}]
 },
-{
-	"id": "blocky",
+"blocky": {
 	"bodies": [{
 		"density": 6,
 		"friction": 0.2,
@@ -28,8 +26,7 @@
 		"imageOffset": [-0.25, 0]
 	}]
 },
-{
-	"id": "bomby",
+"bomby": {
 	"bodies": [{
 		"density": 8,
 		"friction": 0.3,
@@ -49,8 +46,7 @@
 		"imageOffset": [-0.26, -0.08]
 	}]
 },
-{
-	"id": "book",
+"book": {
 	"bodies": [{
 		"density": 7,
 		"friction": 0.4,
@@ -63,8 +59,7 @@
 		"imageOffset": [-0.15, 0]
 	}]
 },
-{
-	"id": "bubble",
+"bubble": {
 	"bodies": [{
 		"density": 0.1,
 		"friction": 0.01,
@@ -75,8 +70,7 @@
 		}]
 	}]
 },
-{
-	"id": "coiny",
+"coiny": {
 	"bodies": [{
 		"density": 3,
 		"friction": 0.1,
@@ -88,8 +82,7 @@
 		"imageOffset": [-0.17, 0.03]
 	}]
 },
-{
-	"id": "donut",
+"donut": {
 	"bodies": [{
 		"density": 5,
 		"friction": 0.6,
@@ -100,8 +93,7 @@
 		}]
 	}]
 },
-{
-	"id": "eraser",
+"eraser": {
 	"bodies": [{
 		"density": 4,
 		"friction": 0.9,
@@ -115,8 +107,7 @@
 		"imageOffset": [-0.07, 0.02]
 	}]
 },
-{
-	"id": "firey",
+"firey": {
 	"bodies": [{
 		"density": 4,
 		"friction": 0.2,
@@ -150,9 +141,22 @@
 		"imageOffset": [-0.22, 0]
 	}]
 },
-{
-	"id": "flower",
+"flower": {
 	"bodies": [
+		{
+			"name": "flower-body",
+			"density": 3,
+			"friction": 0.5,
+			"restitution": 0.2,
+			"shapes": [[
+				[0.00, 0.00],
+				[0.25, 1.42]
+			]],
+			"mirrorX": true,
+			"imageOffset": [0.00, -0.03],
+			"group": 4,
+			"mask": 5
+		},
 		{
 			"density": 2,
 			"friction": 0.6,
@@ -197,41 +201,25 @@
 			"imageOffset": [-0.04, 0],
 			"group": 2,
 			"mask": 3
-		},
-		{
-			"id": "flower-body",
-			"density": 3,
-			"friction": 0.5,
-			"restitution": 0.2,
-			"shapes": [[
-				[0.00, 0.00],
-				[0.25, 1.42]
-			]],
-			"mirrorX": true,
-			"imageOffset": [0.00, -0.03],
-			"group": 4,
-			"mask": 5,
-			"zIndex": -1
 		}
 	],
 	"constraints": [
 		{
 			"bodyA": 0,
 			"bodyB": 1,
-			"anchorA": [0.79, 1.00],
-			"anchorB": [0.10, -0.60]
+			"anchorA": [0.10, -0.60],
+			"anchorB": [0.79,  1.00]
 		},
 		{
 			"bodyA": 0,
 			"bodyB": 1,
-			"anchorA": [0.79, 1.60],
-			"anchorB": [0.10, 0.00],
+			"anchorA": [0.10, 0.00],
+			"anchorB": [0.79, 1.60],
 			"stiff": false
 		}
 	]
 },
-{
-	"id": "fries",
+"fries": {
 	"bodies": [{
 		"density": 3,
 		"friction": 0.5,
@@ -245,8 +233,7 @@
 		"imageOffset": [-0.14, -0.09]
 	}]
 },
-{
-	"id": "gelatin",
+"gelatin": {
 	"bodies": [{
 		"density": 3,
 		"friction": 0.05,
@@ -262,8 +249,7 @@
 		"imageOffset": [-0.16, 0]
 	}]
 },
-{
-	"id": "golf-ball",
+"golf-ball": {
 	"bodies": [{
 		"density": 8,
 		"friction": 0.2,
@@ -274,8 +260,7 @@
 		}]
 	}]
 },
-{
-	"id": "ice-cube",
+"ice-cube": {
 	"bodies": [{
 		"density": 9,
 		"friction": 0.01,
@@ -291,8 +276,7 @@
 		"imageOffset": [-0.01, -0.02]
 	}]
 },
-{
-	"id": "leafy",
+"leafy": {
 	"bodies": [{
 		"density": 1,
 		"friction": 0.2,
@@ -307,8 +291,7 @@
 		"imageOffset": [-0.17, -0.02]
 	}]
 },
-{
-	"id": "match",
+"match": {
 	"bodies": [{
 		"density": 3,
 		"friction": 0.5,
@@ -327,8 +310,7 @@
 		"imageOffset": [-0.28, -0.10]
 	}]
 },
-{
-	"id": "needle",
+"needle": {
 	"bodies": [{
 		"density": 9,
 		"friction": 0.05,
@@ -347,8 +329,7 @@
 		"imageOffset": [-0.04, 0]
 	}]
 },
-{
-	"id": "nickel",
+"nickel": {
 	"bodies": [{
 		"density": 3,
 		"friction": 0.1,
@@ -360,8 +341,7 @@
 		"imageOffset": [-0.02, 0.03]
 	}]
 },
-{
-	"id": "pen",
+"pen": {
 	"bodies": [{
 		"density": 2,
 		"friction": 0.2,
@@ -379,8 +359,7 @@
 		"imageOffset": [-0.22, 0]
 	}]
 },
-{
-	"id": "pencil",
+"pencil": {
 	"bodies": [{
 		"density": 3,
 		"friction": 0.3,
@@ -394,8 +373,7 @@
 		"imageOffset": [-0.23, 0]
 	}]
 },
-{
-	"id": "pin",
+"pin": {
 	"bodies": [{
 		"density": 7,
 		"friction": 0.2,
@@ -414,8 +392,7 @@
 		"imageOffset": [-0.04, 0]
 	}]
 },
-{
-	"id": "puffball",
+"puffball": {
 	"bodies": [{
 		"density": 5,
 		"friction": 0.8,
@@ -427,8 +404,7 @@
 		"imageOffset": [-0.05, -0.05]
 	}]
 },
-{
-	"id": "rocky",
+"rocky": {
 	"bodies": [{
 		"density": 8,
 		"friction": 0.7,
@@ -443,8 +419,7 @@
 		"imageOffset": [0, -0.01]
 	}]
 },
-{
-	"id": "ruby",
+"ruby": {
 	"bodies": [{
 		"density": 1.4,
 		"friction": 0.05,
@@ -457,8 +432,7 @@
 		"mirrorX": true
 	}]
 },
-{
-	"id": "snowball",
+"snowball": {
 	"bodies": [{
 		"density": 7,
 		"friction": 0.3,
@@ -469,8 +443,7 @@
 		}]
 	}]
 },
-{
-	"id": "spongy",
+"spongy": {
 	"bodies": [{
 		"density": 3,
 		"friction": 0.9,
@@ -484,8 +457,7 @@
 		]]
 	}]
 },
-{
-	"id": "teardrop",
+"teardrop": {
 	"bodies": [{
 		"density": 7,
 		"friction": 0.01,
@@ -505,8 +477,7 @@
 		"imageOffset": [-0.24, 0]
 	}]
 },
-{
-	"id": "tennis-ball",
+"tennis-ball": {
 	"bodies": [{
 		"density": 5,
 		"friction": 0.4,
@@ -517,8 +488,7 @@
 		}]
 	}]
 },
-{
-	"id": "woody",
+"woody": {
 	"bodies": [{
 		"density": 2,
 		"friction": 0.4,
@@ -533,8 +503,7 @@
 		]]
 	}]
 },
-{
-	"id": "yellow-face",
+"yellow-face": {
 	"bodies": [{
 		"density": 3,
 		"friction": 0.3,
@@ -552,4 +521,4 @@
 		"imageOffset": [0.02, 0.02]
 	}]
 }
-]
+}
