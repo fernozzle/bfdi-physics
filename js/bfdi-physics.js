@@ -1,12 +1,147 @@
+// Prop setup ----------
+var propDefs;
+var request = new XMLHttpRequest();
+request.open("GET", "characters.json");
+request.onload = function() {
+	propDefs = JSON.parse(request.responseText);
+
+	// Building test scene
+	state = {};
+	state.props = [];
+	for (name in propDefs) {
+		var bodies = [];
+		propDefs[name].bodies.forEach(function() {
+			bodies.push({
+				position: [10, 10],
+				rotation: 0,
+				velocity: [0, 0],
+				angularVelocity: 0
+			});
+		});
+		state.props.push({
+			name:   name,
+			bodies: bodies
+		});
+	}
+
+	init();
+	requestAnimFrame(update);
+}
+request.send();
+
+// Scene setup ----------
+
 var stageWidth  = 30;
 var stageHeight = 22;
+var state;
+
+function createPhysicsRepresentation(prop) {
+	var propDef = propDefs[prop.name];
+	prop.bodies.forEach(function(body, bodyIndex) {
+		var bodyDef = propDef.bodies[bodyIndex];
+
+		var physicsBody = BodyBuilder.createBody(bodyDef);
+		physicsBody.setPosition(body.position);
+		physicsBody.setRotation(body.rotation);
+		physicsBody.setVelocity(body.velocity);
+		physicsBody.setAngularVelocity(body.angularVelocity);
+		
+		world.addRigidBody(physicsBody);
+		Object.defineProperty(body, 'physicsBody', {
+			value: physicsBody,
+			writable: true
+		});
+	});
+	if (propDef.constraints) {
+		propDef.constraints.forEach(function(constraintDef) {
+			var bodyA = prop.bodies[constraintDef.bodyA];
+			var bodyB = prop.bodies[constraintDef.bodyB];
+			var bodyDefA = propDef.bodies[constraintDef.bodyA];
+			var bodyDefB = propDef.bodies[constraintDef.bodyB];
+			world.addConstraint(phys2D.createPointConstraint({
+				bodyA: bodyA.physicsBody,
+				bodyB: bodyB.physicsBody,
+				anchorA: VMath.v2Add(constraintDef.anchorA, bodyDefA.topLeft),
+				anchorB: VMath.v2Add(constraintDef.anchorB, bodyDefB.topLeft),
+				stiff: constraintDef.stiff
+			}));
+		});
+	}
+}
+function createElementRepresentation(prop) {
+	var propDef = propDefs[prop.name];
+	prop.bodies.forEach(function(body, bodyIndex) {
+		var bodyDef = propDef.bodies[bodyIndex];
+		var bodyName = bodyDef.name || prop.name;
+
+		// Create element
+		var element = document.createElement('div');
+		element.className = 'body';
+
+		// Create <img>
+		var image = document.createElement('img');
+		var imageOffset = bodyDef.totalImageOffset;
+		image.style.left = (imageOffset[0] * graphicsScale) + 'px';
+		image.style.top  = (imageOffset[1] * graphicsScale) + 'px';
+
+		// Scale <img>
+		var transformString = 'scale(' + (graphicsScale / imageScale) + ')';
+		image.style.webkitTransform = transformString;
+		image.style.mozTransform    = transformString;
+		image.style.transform       = transformString;
+		image.src = 'images/' + bodyName + '.png';
+
+		element.appendChild(image);
+		stage.appendChild(element);
+		Object.defineProperty(body, 'element', {
+			value: element,
+			writable: true
+		});	
+	});
+}
+function syncPhysicsRepresentation(prop) {
+	prop.bodies.forEach(function(body) {
+		var physicsBody = body.physicsBody;
+		
+		physicsBody.getPosition(body.position);
+		body.rotation = physicsBody.getRotation();
+		physicsBody.getVelocity(body.velocity);
+		body.angularVelocity = physicsBody.getAngularVelocity();
+	});
+}
+function syncElementRepresentation(prop) {
+	prop.bodies.forEach(function(body) {
+		transformString = 
+			'translate3d(' +
+				(body.position[0] * graphicsScale) + 'px,' +
+				(body.position[1] * graphicsScale) + 'px,0)' +
+			'rotate(' + (degreesPerRadian * body.rotation) + 'deg)';
+		body.element.style.webkitTransform = transformString;
+		body.element.style.mozTransform    = transformString;
+		body.element.style.transform       = transformString;
+	});
+}
+// Graphics setup ----------
 
 var imageScale    = 50; // Size of image dimensions compared to defined shapes
 var graphicsScale = 40;  // Size to display bodies compared to defined shapes
-var stageElement = document.getElementById('stage');
-stageElement.style.width  = stageWidth  * graphicsScale + 'px';
-stageElement.style.height = stageHeight * graphicsScale + 'px';
+var stage = document.getElementById('stage');
+stage.style.width  = stageWidth  * graphicsScale + 'px';
+stage.style.height = stageHeight * graphicsScale + 'px';
 var degreesPerRadian = 57.2957795;
+
+window.requestAnimFrame = (function(){
+	return  window.requestAnimationFrame       || 
+	        window.webkitRequestAnimationFrame || 
+	        window.mozRequestAnimationFrame    || 
+	        window.oRequestAnimationFrame      || 
+	        window.msRequestAnimationFrame     || 
+	        function(callback, element){
+	          window.setTimeout(callback, 1000 / 60);
+	        };
+})();
+
+// Physics setup ----------
 
 var phys2D = Physics2DDevice.create();
 var framerate = 60;
@@ -30,17 +165,14 @@ var animationState = 0;
 var lift;
 var pusher;
 
+// FPS counter setup ----------
+
 var previousTime = Date.now();
 var fpsElement = document.getElementById('fps');
 
-var game = new ash.Game();
-game.addSystem(new PhysicsSyncSystem(), 1);
-game.addSystem(new ElementSyncSystem(stageElement, graphicsScale), 2);
-
-var creator = new EntityCreator(game);
-
-function reset() {
+function init() {
 	world.clear();
+
 	handConstraint = null;
 
 	var thickness = 0.01;
@@ -81,7 +213,7 @@ function reset() {
 		element.style.webkitTransform = transformString;
 		element.style.mozTransform = transformString;
 		element.style.transform = transformString;
-		stageElement.appendChild(element);
+		stage.appendChild(element);
 
 		var shapes = [
 			phys2D.createPolygonShape({
@@ -144,61 +276,11 @@ function reset() {
 		animationState = 0;
 	}
 
-	function placeBody(body, position) {
-		var shapes = body.shapes.map(function(shape) {
-			return shape.clone();
-		});
-		var element = document.createElement('div');
-		element.className = 'body';
-		element.style.zIndex = body.userData.zIndex;
-		var image = document.createElement('img');
-		var imageOffset = VMath.v2Add(body.userData.topLeft, body.userData.imageOffset);
-		image.style.left = (imageOffset[0] * graphicsScale) + 'px';
-		image.style.top  = (imageOffset[1] * graphicsScale) + 'px';
-		var transformString = 'scale(' + (graphicsScale / imageScale) + ')';
-		image.style.webkitTransform = transformString;
-		image.style.mozTransform    = transformString;
-		image.style.transform       = transformString;
-		image.src = 'images/' + body.userData.id + '.png';
-		element.appendChild(image);
-
-		var newBody = phys2D.createRigidBody({
-			shapes: shapes,
-			position: position,
-			userData: {element: element}
-		});
-		world.addRigidBody(newBody);
-
-		creator.createBody(newBody, element);
-
-		return newBody;
-	}
-	for (var repeat = 0; repeat < 1; repeat++) {
-		var i = 0;
-		chars.forEach(function(char) {
-			var placedBodies = [];
-			var position = [
-				1 + (i * 0.9),
-				3 + (repeat * 1)
-			];
-			char.forEach(function(member) {
-				if (member.shapes) { // Is this a body or a constraint?
-					placedBodies.push(placeBody(member, position));
-				} else {
-					var a = member.bodyA;
-					var b = member.bodyB;
-					world.addConstraint(phys2D.createPointConstraint({
-						bodyA: placedBodies[a],
-						bodyB: placedBodies[b],
-						anchorA: VMath.v2Add(member.anchorA, char[a].userData.topLeft),
-						anchorB: VMath.v2Add(member.anchorB, char[b].userData.topLeft),
-						stiff: member.stiff
-					}));
-				}
-			});
-			i++;
-		});
-	}
+	state.props.forEach(function(prop) {
+		createPhysicsRepresentation(prop);
+		createElementRepresentation(prop);
+	});
+	
 	var mouseDown = function(e) {
 		if (handConstraint) return;
 
@@ -235,16 +317,16 @@ function reset() {
 			handConstraint = null;
 		}
 	}
-	stageElement.onmousedown = mouseDown;
-	stageElement.onmousemove = mouseMove;
-	stageElement.onmouseup = mouseUp;
-	stageElement.ontouchstart = function(e) {
+	stage.onmousedown = mouseDown;
+	stage.onmousemove = mouseMove;
+	stage.onmouseup = mouseUp;
+	stage.ontouchstart = function(e) {
 		return mouseDown(e.touches[0]);
 	}
-	stageElement.ontouchmove = function(e) {
+	stage.ontouchmove = function(e) {
 		return mouseMove(e.touches[0]);
 	}
-	stageElement.ontouchend = function(e) {
+	stage.ontouchend = function(e) {
 		return mouseUp(e.touches[0]);
 	}
 }
@@ -293,7 +375,11 @@ var update = function() {
 	}
 
 	world.step(1 / framerate);
-	game.update();
+
+	state.props.forEach(function(prop) {
+		syncPhysicsRepresentation(prop);
+		syncElementRepresentation(prop);
+	});
 
 	var currentTime = Date.now()
 	var secondsElapsed = (currentTime - previousTime) / 1000;
@@ -309,25 +395,3 @@ var update = function() {
 	requestAnimFrame(update);
 }
 
-window.requestAnimFrame = (function(){
-	return  window.requestAnimationFrame       || 
-	        window.webkitRequestAnimationFrame || 
-	        window.mozRequestAnimationFrame    || 
-	        window.oRequestAnimationFrame      || 
-	        window.msRequestAnimationFrame     || 
-	        function(callback, element){
-	          window.setTimeout(callback, 1000 / 60);
-	        };
-})();
-
-var chars;
-var request = new XMLHttpRequest();
-request.open("GET", "characters.json");
-request.onload = function() {
-	var bodyBuilder = BPT.BodyBuilder.create({phys2D: phys2D});
-	chars = bodyBuilder.buildChars(request.responseText);
-
-	reset();
-	requestAnimFrame(update);
-}
-request.send();

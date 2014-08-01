@@ -1,6 +1,6 @@
-[
-	[{
-		"id": "announcer",
+{
+"announcer": {
+	"bodies": [{
 		"density": 8,
 		"friction": 0.1,
 		"restitution": 0.2,
@@ -9,9 +9,10 @@
 		]],
 		"mirrorX": true,
 		"mirrorY": true
-	}],
-	[{
-		"id": "blocky",
+	}]
+},
+"blocky": {
+	"bodies": [{
 		"density": 6,
 		"friction": 0.2,
 		"restitution": 0.6,
@@ -23,9 +24,10 @@
 			[0.00, 1.37]
 		]],
 		"imageOffset": [-0.25, 0]
-	}],
-	[{
-		"id": "bomby",
+	}]
+},
+"bomby": {
+	"bodies": [{
 		"density": 8,
 		"friction": 0.3,
 		"restitution": 0.7,
@@ -42,9 +44,10 @@
 			]
 		],
 		"imageOffset": [-0.26, -0.08]
-	}],
-	[{
-		"id": "book",
+	}]
+},
+"book": {
+	"bodies": [{
 		"density": 7,
 		"friction": 0.4,
 		"restitution": 0.3,
@@ -54,46 +57,44 @@
 		"mirrorX": true,
 		"mirrorY": true,
 		"imageOffset": [-0.15, 0]
-	}],
-	[{
-		"id": "bubble",
+	}]
+},
+"bubble": {
+	"bodies": [{
 		"density": 0.1,
 		"friction": 0.01,
 		"restitution": 0.7,
-		"shapes": [
-			{
-				"radius": 0.98,
-				"origin": [0, 0]
-			}
-		]
-	}],
-	[{
-		"id": "coiny",
+		"shapes": [{
+			"radius": 0.98,
+			"origin": [0, 0]
+		}]
+	}]
+},
+"coiny": {
+	"bodies": [{
 		"density": 3,
 		"friction": 0.1,
 		"restitution": 0.7,
-		"shapes": [
-			{
-				"radius": 0.57,
-				"origin": [0, 0]
-			}
-		],
+		"shapes": [{
+			"radius": 0.57,
+			"origin": [0, 0]
+		}],
 		"imageOffset": [-0.17, 0.03]
-	}],
-	[{
-		"id": "donut",
+	}]
+},
+"donut": {
+	"bodies": [{
 		"density": 5,
 		"friction": 0.6,
 		"restitution": 0.3,
-		"shapes": [
-			{
-				"radius": 0.84,
-				"origin": [0, 0]
-			}
-		]
-	}],
-	[{
-		"id": "eraser",
+		"shapes": [{
+			"radius": 0.84,
+			"origin": [0, 0]
+		}]
+	}]
+},
+"eraser": {
+	"bodies": [{
 		"density": 4,
 		"friction": 0.9,
 		"restitution": 0.5,
@@ -104,9 +105,10 @@
 			[0.00,  1.70]
 		]],
 		"imageOffset": [-0.07, 0.02]
-	}],
-	[{
-		"id": "firey",
+	}]
+},
+"firey": {
+	"bodies": [{
 		"density": 4,
 		"friction": 0.2,
 		"restitution": 0.4,
@@ -137,10 +139,25 @@
 			]
 		],
 		"imageOffset": [-0.22, 0]
-	}],
-	[
+	}]
+},
+"flower": {
+	"bodies": [
 		{
-			"id": "flower",
+			"name": "flower-body",
+			"density": 3,
+			"friction": 0.5,
+			"restitution": 0.2,
+			"shapes": [[
+				[0.00, 0.00],
+				[0.25, 1.42]
+			]],
+			"mirrorX": true,
+			"imageOffset": [0.00, -0.03],
+			"group": 4,
+			"mask": 5
+		},
+		{
 			"density": 2,
 			"friction": 0.6,
 			"restitution": 0.2,
@@ -184,40 +201,26 @@
 			"imageOffset": [-0.04, 0],
 			"group": 2,
 			"mask": 3
-		},
-		{
-			"id": "flower-body",
-			"density": 3,
-			"friction": 0.5,
-			"restitution": 0.2,
-			"shapes": [[
-				[0.00, 0.00],
-				[0.25, 1.42]
-			]],
-			"mirrorX": true,
-			"imageOffset": [0.00, -0.03],
-			"group": 4,
-			"mask": 5,
-			"zIndex": -1
-		},
-		{
-			"constraint": "point",
-			"bodyA": 0,
-			"bodyB": 1,
-			"anchorA": [0.79, 1.00],
-			"anchorB": [0.10, -0.60]
-		},
-		{
-			"constraint": "point",
-			"bodyA": 0,
-			"bodyB": 1,
-			"anchorA": [0.79, 1.60],
-			"anchorB": [0.10, 0.00],
-			"stiff": false
 		}
 	],
-	[{
-		"id": "fries",
+	"constraints": [
+		{
+			"bodyA": 0,
+			"bodyB": 1,
+			"anchorA": [0.10, -0.60],
+			"anchorB": [0.79,  1.00]
+		},
+		{
+			"bodyA": 0,
+			"bodyB": 1,
+			"anchorA": [0.10, 0.00],
+			"anchorB": [0.79, 1.60],
+			"stiff": false
+		}
+	]
+},
+"fries": {
+	"bodies": [{
 		"density": 3,
 		"friction": 0.5,
 		"restitution": 0.2,
@@ -228,9 +231,10 @@
 		]],
 		"mirrorX": true,
 		"imageOffset": [-0.14, -0.09]
-	}],
-	[{
-		"id": "gelatin",
+	}]
+},
+"gelatin": {
+	"bodies": [{
 		"density": 3,
 		"friction": 0.05,
 		"restitution": 0.2,
@@ -243,21 +247,21 @@
 		]],
 		"mirrorX": true,
 		"imageOffset": [-0.16, 0]
-	}],
-	[{
-		"id": "golf-ball",
+	}]
+},
+"golf-ball": {
+	"bodies": [{
 		"density": 8,
 		"friction": 0.2,
 		"restitution": 0.4,
-		"shapes": [
-			{
-				"radius": 0.62,
-				"origin": [0, 0]
-			}
-		]
-	}],
-	[{
-		"id": "ice-cube",
+		"shapes": [{
+			"radius": 0.62,
+			"origin": [0, 0]
+		}]
+	}]
+},
+"ice-cube": {
+	"bodies": [{
 		"density": 9,
 		"friction": 0.01,
 		"restitution": 0.1,
@@ -270,9 +274,10 @@
 			[0.01, 0.24]
 		]],
 		"imageOffset": [-0.01, -0.02]
-	}],
-	[{
-		"id": "leafy",
+	}]
+},
+"leafy": {
+	"bodies": [{
 		"density": 1,
 		"friction": 0.2,
 		"restitution": 0.5,
@@ -284,9 +289,10 @@
 		"mirrorX": true,
 		"mirrorY": true,
 		"imageOffset": [-0.17, -0.02]
-	}],
-	[{
-		"id": "match",
+	}]
+},
+"match": {
+	"bodies": [{
 		"density": 3,
 		"friction": 0.5,
 		"restitution": 0.8,
@@ -302,9 +308,10 @@
 		],
 		"mirrorX": true,
 		"imageOffset": [-0.28, -0.10]
-	}],
-	[{
-		"id": "needle",
+	}]
+},
+"needle": {
+	"bodies": [{
 		"density": 9,
 		"friction": 0.05,
 		"restitution": 0.85,
@@ -320,22 +327,22 @@
 		],
 		"mirrorX": true,
 		"imageOffset": [-0.04, 0]
-	}],
-	[{
-		"id": "nickel",
+	}]
+},
+"nickel": {
+	"bodies": [{
 		"density": 3,
 		"friction": 0.1,
 		"restitution": 0.7,
-		"shapes": [
-			{
-				"radius": 0.57,
-				"origin": [0, 0]
-			}
-		],
+		"shapes": [{
+			"radius": 0.57,
+			"origin": [0, 0]
+		}],
 		"imageOffset": [-0.02, 0.03]
-	}],
-	[{
-		"id": "pen",
+	}]
+},
+"pen": {
+	"bodies": [{
 		"density": 2,
 		"friction": 0.2,
 		"restitution": 0.8,
@@ -350,9 +357,10 @@
 			]
 		],
 		"imageOffset": [-0.22, 0]
-	}],
-	[{
-		"id": "pencil",
+	}]
+},
+"pencil": {
+	"bodies": [{
 		"density": 3,
 		"friction": 0.3,
 		"restitution": 0.7,
@@ -363,9 +371,10 @@
 		]],
 		"mirrorX": true,
 		"imageOffset": [-0.23, 0]
-	}],
-	[{
-		"id": "pin",
+	}]
+},
+"pin": {
+	"bodies": [{
 		"density": 7,
 		"friction": 0.2,
 		"restitution": 0.6,
@@ -381,22 +390,22 @@
 		],
 		"mirrorX": true,
 		"imageOffset": [-0.04, 0]
-	}],
-	[{
-		"id": "puffball",
+	}]
+},
+"puffball": {
+	"bodies": [{
 		"density": 5,
 		"friction": 0.8,
 		"restitution": 0.2,
-		"shapes": [
-			{
-				"radius": 0.66,
-				"origin": [0, 0]
-			}
-		],
+		"shapes": [{
+			"radius": 0.66,
+			"origin": [0, 0]
+		}],
 		"imageOffset": [-0.05, -0.05]
-	}],
-	[{
-		"id": "rocky",
+	}]
+},
+"rocky": {
+	"bodies": [{
 		"density": 8,
 		"friction": 0.7,
 		"restitution": 0.5,
@@ -408,9 +417,10 @@
 			[0.00, 0.73]
 		]],
 		"imageOffset": [0, -0.01]
-	}],
-	[{
-		"id": "ruby",
+	}]
+},
+"ruby": {
+	"bodies": [{
 		"density": 1.4,
 		"friction": 0.05,
 		"restitution": 0.5,
@@ -420,21 +430,21 @@
 			[0.00, 1.18]
 		]],
 		"mirrorX": true
-	}],
-	[{
-		"id": "snowball",
+	}]
+},
+"snowball": {
+	"bodies": [{
 		"density": 7,
 		"friction": 0.3,
 		"restitution": 0.05,
-		"shapes": [
-			{
-				"radius": 1.03,
-				"origin": [0, 0]
-			}
-		]
-	}],
-	[{
-		"id": "spongy",
+		"shapes": [{
+			"radius": 1.03,
+			"origin": [0, 0]
+		}]
+	}]
+},
+"spongy": {
+	"bodies": [{
 		"density": 3,
 		"friction": 0.9,
 		"restitution": 0.8,
@@ -445,9 +455,10 @@
 			[3.61, 2.40],
 			[0.03, 2.40]
 		]]
-	}],
-	[{
-		"id": "teardrop",
+	}]
+},
+"teardrop": {
+	"bodies": [{
 		"density": 7,
 		"friction": 0.01,
 		"restitution": 0.7,
@@ -464,21 +475,21 @@
 			]
 		],
 		"imageOffset": [-0.24, 0]
-	}],
-	[{
-		"id": "tennis-ball",
+	}]
+},
+"tennis-ball": {
+	"bodies": [{
 		"density": 5,
 		"friction": 0.4,
 		"restitution": 0.9,
-		"shapes": [
-			{
-				"radius": 0.98,
-				"origin": [0, 0]
-			}
-		]
-	}],
-	[{
-		"id": "woody",
+		"shapes": [{
+			"radius": 0.98,
+			"origin": [0, 0]
+		}]
+	}]
+},
+"woody": {
+	"bodies": [{
 		"density": 2,
 		"friction": 0.4,
 		"restitution": 0.7,
@@ -490,9 +501,10 @@
 			[0.18, 1.64],
 			[0.00, 1.21]
 		]]
-	}],
-	[{
-		"id": "yellow-face",
+	}]
+},
+"yellow-face": {
+	"bodies": [{
 		"density": 3,
 		"friction": 0.3,
 		"restitution": 0.8,
@@ -508,4 +520,5 @@
 		]],
 		"imageOffset": [0.02, 0.02]
 	}]
-]
+}
+}
