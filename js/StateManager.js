@@ -9,26 +9,32 @@ var StateManager = (function() {
 		'a': 'angularVelocity'
 	});
 	function renameKeys(object, mapFunction) {
-		if (object && typeof object === 'object' && object.length === undefined) {
-			var replacement = {};
-			for (var longKey in object) {
-				var shortKey = mapFunction(longKey) || longKey;
-				replacement[shortKey] = object[longKey];
-			}
-			return replacement;
+		// Array
+		if (Object.prototype.toString.call(object) === '[object Array]') {
+			return object.map(function(element) {
+				return renameKeys(element, mapFunction);
+			});
 		}
+		// Object
+		if (Object.prototype.toString.call(object) === '[object Object]') {
+			var result = {};
+			for (var origKey in object) {
+				var newKey = mapFunction(origKey) || origKey;
+				result[newKey] = renameKeys(object[origKey], mapFunction);
+			}
+			return result;
+		}
+		// Other
 		return object;
 	}
 	return {
 		serializeState: function(state) {
-			return JSON.stringify(state, function (key, value) {
-				return renameKeys(value, keyMap.revGet.bind(keyMap));
-			});
+			var stateShortKeys = renameKeys(state, keyMap.revGet.bind(keyMap));
+			return msgpack.pack(stateShortKeys, true);
 		},
-		deserializeState: function(jsonData) {
-			return JSON.parse(jsonData, function (key, value) {
-				return renameKeys(value, keyMap.get.bind(keyMap));
-			});
+		deserializeState: function(data) {
+			var stateShortKeys = msgpack.unpack(data);
+			return renameKeys(state, keyMap.get.bind(keyMap));
 		}
 	};
 })();
