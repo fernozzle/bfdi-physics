@@ -6,10 +6,10 @@ var state = {
 };
 
 var config = {
-	imageScale: 50, // Size of images compared to defined shapes
-	framerate: 60
+	imageScale: 50 // Size of images compared to defined shapes
 };
-var footageSeconds = 60;
+var renderFramerate = 24;
+var renderDuration  = 60; // in seconds
 
 // Scene setup ----------
 
@@ -106,16 +106,7 @@ stage.style.width  = state.size[0] * state.camera.zoom + 'px';
 stage.style.height = state.size[1] * state.camera.zoom + 'px';
 var degreesPerRadian = 57.2957795;
 
-window.requestAnimFrame = (function(){
-	return  window.requestAnimationFrame       || 
-	        window.webkitRequestAnimationFrame || 
-	        window.mozRequestAnimationFrame    || 
-	        window.oRequestAnimationFrame      || 
-	        window.msRequestAnimationFrame     || 
-	        function(callback, element){
-	          window.setTimeout(callback, 1000 / 60);
-	        };
-})();
+var animator = new Animator();
 
 // Physics setup ----------
 
@@ -219,30 +210,26 @@ function init() {
 	});
 }
 
-var update = function() {
-	world.step(1 / config.framerate);
+var update = function(delta) {
+	//delta = 1/60;
+	world.step(delta);
 
 	state.props.forEach(function(prop) {
 		syncPhysicsRepresentation(prop);
 		syncElementRepresentation(prop);
 	});
 
-	var currentTime = Date.now()
-	var secondsElapsed = (currentTime - previousTime) / 1000;
-	var fps = 1 / secondsElapsed;
-	var renderSeconds = secondsElapsed * footageSeconds * config.framerate;
+	var fps = 1 / delta;
+	var renderSeconds = delta * renderDuration * renderFramerate;
 	fpsElement.innerHTML =
 		('   ' + fps.toFixed(1)).substr(-5, 5) + 'fps | ' +
-		footageSeconds + 's @ ' + config.framerate + 'fps &rarr; ' +
+		renderDuration + 's @ ' + renderFramerate + 'fps &rarr; ' +
 		(renderSeconds / 60 / 60).toFixed(2) + ' hours (' +
 		(renderSeconds / 60).toFixed(1) + ' minutes)';
-	previousTime = currentTime;
-
-	requestAnimFrame(update);
 }
 
 init();
-requestAnimFrame(update);
+animator.start(update);
 
 // Load prop definitions and add props once loaded
 // -----------------------------------------------
