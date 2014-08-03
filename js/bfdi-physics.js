@@ -2,7 +2,7 @@ var state = {
 	gravity: [0, 20],
 	size: [30, 22],
 	props: [],
-	camera: {zoom: 40}
+	camera: {zoom: 30}
 };
 
 var config = {
