@@ -1,39 +1,17 @@
-// Prop setup ----------
-var propDefs;
-var request = new XMLHttpRequest();
-request.open("GET", "characters.json");
-request.onload = function() {
-	propDefs = JSON.parse(request.responseText);
+var state = {
+	gravity: [0, 20],
+	size: [30, 22],
+	props: [],
+	camera: {zoom: 40}
+};
 
-	// Building test scene
-	state = {};
-	state.props = [];
-	for (name in propDefs) {
-		var bodies = [];
-		propDefs[name].bodies.forEach(function() {
-			bodies.push({
-				position: [10, 10],
-				rotation: 0,
-				velocity: [0, 0],
-				angularVelocity: 0
-			});
-		});
-		state.props.push({
-			name:   name,
-			bodies: bodies
-		});
-	}
-
-	init();
-	requestAnimFrame(update);
-}
-request.send();
+var config = {
+	imageScale: 50, // Size of images compared to defined shapes
+	framerate: 60
+};
+var footageSeconds = 60;
 
 // Scene setup ----------
-
-var stageWidth  = 30;
-var stageHeight = 22;
-var state;
 
 function createPhysicsRepresentation(prop) {
 	var propDef = propDefs[prop.name];
@@ -81,11 +59,11 @@ function createElementRepresentation(prop) {
 		// Create <img>
 		var image = document.createElement('img');
 		var imageOffset = bodyDef.totalImageOffset;
-		image.style.left = (imageOffset[0] * graphicsScale) + 'px';
-		image.style.top  = (imageOffset[1] * graphicsScale) + 'px';
+		image.style.left = (imageOffset[0] * state.camera.zoom) + 'px';
+		image.style.top  = (imageOffset[1] * state.camera.zoom) + 'px';
 
 		// Scale <img>
-		var transformString = 'scale(' + (graphicsScale / imageScale) + ')';
+		var transformString = 'scale(' + (state.camera.zoom / config.imageScale) + ')';
 		image.style.webkitTransform = transformString;
 		image.style.mozTransform    = transformString;
 		image.style.transform       = transformString;
@@ -113,8 +91,8 @@ function syncElementRepresentation(prop) {
 	prop.bodies.forEach(function(body) {
 		transformString = 
 			'translate3d(' +
-				(body.position[0] * graphicsScale) + 'px,' +
-				(body.position[1] * graphicsScale) + 'px,0)' +
+				(body.position[0] * state.camera.zoom) + 'px,' +
+				(body.position[1] * state.camera.zoom) + 'px,0)' +
 			'rotate(' + (degreesPerRadian * body.rotation) + 'deg)';
 		body.element.style.webkitTransform = transformString;
 		body.element.style.mozTransform    = transformString;
@@ -123,11 +101,9 @@ function syncElementRepresentation(prop) {
 }
 // Graphics setup ----------
 
-var imageScale    = 50; // Size of image dimensions compared to defined shapes
-var graphicsScale = 40;  // Size to display bodies compared to defined shapes
 var stage = document.getElementById('stage');
-stage.style.width  = stageWidth  * graphicsScale + 'px';
-stage.style.height = stageHeight * graphicsScale + 'px';
+stage.style.width  = state.size[0] * state.camera.zoom + 'px';
+stage.style.height = state.size[1] * state.camera.zoom + 'px';
 var degreesPerRadian = 57.2957795;
 
 window.requestAnimFrame = (function(){
@@ -144,10 +120,7 @@ window.requestAnimFrame = (function(){
 // Physics setup ----------
 
 var phys2D = Physics2DDevice.create();
-var framerate = 60;
-var footageSeconds = 60;
-
-var world = phys2D.createWorld({gravity: [0, 20]});
+var world = phys2D.createWorld({gravity: state.gravity});
 
 var conveyorBeltMaterial = phys2D.createMaterial({
 	elasticity: 0,
@@ -169,16 +142,16 @@ function init() {
 		type: 'static',
 		shapes: [
 			phys2D.createPolygonShape({
-				vertices: phys2D.createRectangleVertices(0, 0, thickness, stageHeight)
+				vertices: phys2D.createRectangleVertices(0, 0, thickness, state.size[1])
 			}),
 			phys2D.createPolygonShape({
-				vertices: phys2D.createRectangleVertices(0, 0, stageWidth, thickness)
+				vertices: phys2D.createRectangleVertices(0, 0, state.size[0], thickness)
 			}),
 			phys2D.createPolygonShape({
-				vertices: phys2D.createRectangleVertices((stageWidth - thickness), 0, stageWidth, stageHeight)
+				vertices: phys2D.createRectangleVertices((state.size[0] - thickness), 0, state.size[0], state.size[1])
 			}),
 			phys2D.createPolygonShape({
-				vertices: phys2D.createRectangleVertices(0, (stageHeight - thickness), stageWidth, stageHeight)
+				vertices: phys2D.createRectangleVertices(0, (state.size[1] - thickness), state.size[0], state.size[1])
 			})
 		]
 	});
@@ -191,12 +164,12 @@ function init() {
 
 		var element = document.createElement('div');
 		element.className = 'belt';
-		element.style.width  = ((length + 2 * radius) * graphicsScale) + 'px';
-		element.style.height = (radius * 2 * graphicsScale) + 'px';
+		element.style.width  = ((length + 2 * radius) * state.camera.zoom) + 'px';
+		element.style.height = (radius * 2 * state.camera.zoom) + 'px';
 		var transformString = 
 			'translate(' +
-				((x1 + normal[0] + normal[1]) * graphicsScale) + 'px,' +
-				((y1 + normal[1] - normal[0]) * graphicsScale) + 'px)' +
+				((x1 + normal[0] + normal[1]) * state.camera.zoom) + 'px,' +
+				((y1 + normal[1] - normal[0]) * state.camera.zoom) + 'px)' +
 			'rotate(' +
 				(degreesPerRadian * Math.atan2(y2 - y1, x2 - x1)) + 'deg)';
 		element.style.webkitTransform = transformString;
@@ -247,7 +220,7 @@ function init() {
 }
 
 var update = function() {
-	world.step(1 / framerate);
+	world.step(1 / config.framerate);
 
 	state.props.forEach(function(prop) {
 		syncPhysicsRepresentation(prop);
@@ -257,10 +230,10 @@ var update = function() {
 	var currentTime = Date.now()
 	var secondsElapsed = (currentTime - previousTime) / 1000;
 	var fps = 1 / secondsElapsed;
-	var renderSeconds = secondsElapsed * footageSeconds * framerate;
+	var renderSeconds = secondsElapsed * footageSeconds * config.framerate;
 	fpsElement.innerHTML =
 		('   ' + fps.toFixed(1)).substr(-5, 5) + 'fps | ' +
-		footageSeconds + 's @ ' + framerate + 'fps &rarr; ' +
+		footageSeconds + 's @ ' + config.framerate + 'fps &rarr; ' +
 		(renderSeconds / 60 / 60).toFixed(2) + ' hours (' +
 		(renderSeconds / 60).toFixed(1) + ' minutes)';
 	previousTime = currentTime;
@@ -268,3 +241,37 @@ var update = function() {
 	requestAnimFrame(update);
 }
 
+init();
+requestAnimFrame(update);
+
+// Load prop definitions and add props once loaded
+// -----------------------------------------------
+var propDefs;
+function addProp(propDef) {
+	var bodies = [];
+	propDef.bodies.forEach(function() {
+		bodies.push({
+			position: [10, 10],
+			rotation: 0,
+			velocity: [0, 0],
+			angularVelocity: 0
+		});
+	});
+	var prop = {
+		name:   name,
+		bodies: bodies
+	};
+	state.props.push(prop);
+	createPhysicsRepresentation(prop);
+	createElementRepresentation(prop);
+}
+var request = new XMLHttpRequest();
+request.open("GET", "characters.json");
+request.onload = function() {
+	propDefs = JSON.parse(request.responseText);
+
+	for (name in propDefs) {
+		addProp(propDefs[name]);
+	}
+}
+request.send();
