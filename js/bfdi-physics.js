@@ -146,7 +146,6 @@ window.requestAnimFrame = (function(){
 var phys2D = Physics2DDevice.create();
 var framerate = 60;
 var footageSeconds = 60;
-var machineryEnabled = true;
 
 var world = phys2D.createWorld({gravity: [0, 20]});
 
@@ -156,10 +155,6 @@ var conveyorBeltMaterial = phys2D.createMaterial({
 	dynamicFriction: 8,
 	rollingFriction: 0.1
 });
-
-var animationState = 0;
-var lift;
-var pusher;
 
 // FPS counter setup ----------
 
@@ -237,38 +232,13 @@ function init() {
 		});
 	};
 
-	if (machineryEnabled) {
-		world.addRigidBody(createBelt( 0, 11,  7, 14, 0.5,  2));
-		world.addRigidBody(createBelt( 7, 14, 12, 12, 0.5,  2));
-		world.addRigidBody(createBelt(12, 18, 20, 15, 0.5, 12));
-		world.addRigidBody(createBelt( 0, 22, 21, 22, 0.5,  2));
-		world.addRigidBody(createBelt(20, 10, 10,  5, 0.5, -2));
-		world.addRigidBody(createBelt(10,  5,  5,  5, 0.5, -2));
-
-		// Create lift and pusher bodies.
-		lift = phys2D.createRigidBody({
-			shapes: [
-				phys2D.createPolygonShape({
-					vertices: phys2D.createBoxVertices(9, 0.01),
-					elasticity: 1
-				})
-			],
-			type: 'kinematic',
-			position: [stageWidth - 4.5, stageHeight]
-		});
-		pusher = phys2D.createRigidBody({
-			shapes: [
-				phys2D.createPolygonShape({
-					vertices: phys2D.createBoxVertices(9, 10)
-				})
-			],
-			type: 'kinematic',
-			position: [stageWidth + 4.5, 5]
-		});
-		world.addRigidBody(lift);
-		world.addRigidBody(pusher);
-		animationState = 0;
-	}
+	world.addRigidBody(createBelt( 0, 11,  7, 14, 0.5,  2));
+	world.addRigidBody(createBelt( 7, 14, 12, 12, 0.5,  2));
+	world.addRigidBody(createBelt(12, 18, 20, 15, 0.5, 12));
+	world.addRigidBody(createBelt( 0, 22, 21, 22, 0.5,  2));
+	world.addRigidBody(createBelt(20, 10, 10,  5, 0.5, -2));
+	world.addRigidBody(createBelt(10,  5,  5,  5, 0.5, -2));
+	world.addRigidBody(createBelt(21, 22, 30, 10, 0.5, 10));
 
 	state.props.forEach(function(prop) {
 		createPhysicsRepresentation(prop);
@@ -277,44 +247,6 @@ function init() {
 }
 
 var update = function() {
-	if (machineryEnabled) {
-		if (animationState === 0) {
-			// Start of animation, set velocity of lift to move up to the target
-			// in 3 seconds.
-			lift.setVelocityFromPosition([stageWidth - 4.5, 10], 0, 3);
-			animationState = 1;
-		} else if (animationState === 1) {
-			if (lift.getPosition()[1] <= 10) {
-				// Reached target position for lift.
-				// Set position incase it over-reached and zero velocity.
-				lift.setPosition([stageWidth - 4.5, 10]);
-				lift.setVelocity([0, 0]);
-
-				// Start pusher animation to move left.
-				pusher.setVelocityFromPosition([stageWidth - 4.5, 5], 0, 1.5);
-				animationState = 2;
-			}
-		} else if (animationState === 2) {
-			if (pusher.getPosition()[0] <= (stageWidth - 4.5)) {
-				// Reached target position for pusher.
-				// Set velocities of pusher and lift to both move right off-screen.
-				pusher.setVelocityFromPosition([stageWidth + 4.5, 5], 0, 1);
-				lift.setVelocityFromPosition([stageWidth + 4.5, 10], 0, 1);
-				animationState = 3;
-			}
-		} else if (animationState === 3) {
-			if (pusher.getPosition()[0] >= stageWidth + 4.5) {
-				// Reached target.
-				// Reset positions and velocities and begin animation afresh.
-				pusher.setPosition([stageWidth + 4.5, 5]);
-				pusher.setVelocity([0, 0]);
-				lift.setPosition([stageWidth - 4.5, stageHeight]);
-				lift.setVelocity([0, 0]);
-				animationState = 0;
-			}
-		}
-	}
-
 	world.step(1 / framerate);
 
 	state.props.forEach(function(prop) {
