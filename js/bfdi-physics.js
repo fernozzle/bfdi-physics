@@ -11,94 +11,6 @@ var config = {
 var renderFramerate = 24;
 var renderDuration  = 60; // in seconds
 
-// Scene setup ----------
-
-function createPhysicsRepresentation(prop) {
-	var propDef = propDefs[prop.name];
-	prop.bodies.forEach(function(body, bodyIndex) {
-		var bodyDef = propDef.bodies[bodyIndex];
-
-		var physicsBody = BodyBuilder.createBody(bodyDef, phys2D);
-		physicsBody.setPosition(body.position);
-		physicsBody.setRotation(body.rotation);
-		physicsBody.setVelocity(body.velocity);
-		physicsBody.setAngularVelocity(body.angularVelocity);
-		
-		world.addRigidBody(physicsBody);
-		Object.defineProperty(body, 'physicsBody', {
-			value: physicsBody,
-			writable: true
-		});
-	});
-	if (propDef.constraints) {
-		propDef.constraints.forEach(function(constraintDef) {
-			var bodyA = prop.bodies[constraintDef.bodyA];
-			var bodyB = prop.bodies[constraintDef.bodyB];
-			var bodyDefA = propDef.bodies[constraintDef.bodyA];
-			var bodyDefB = propDef.bodies[constraintDef.bodyB];
-			world.addConstraint(phys2D.createPointConstraint({
-				bodyA: bodyA.physicsBody,
-				bodyB: bodyB.physicsBody,
-				anchorA: VMath.v2Add(constraintDef.anchorA, bodyDefA.topLeft),
-				anchorB: VMath.v2Add(constraintDef.anchorB, bodyDefB.topLeft),
-				stiff: constraintDef.stiff
-			}));
-		});
-	}
-}
-function createElementRepresentation(prop) {
-	var propDef = propDefs[prop.name];
-	prop.bodies.forEach(function(body, bodyIndex) {
-		var bodyDef = propDef.bodies[bodyIndex];
-		var bodyName = bodyDef.name || prop.name;
-
-		// Create element
-		var element = document.createElement('div');
-		element.className = 'body';
-
-		// Create <img>
-		var image = document.createElement('img');
-		var imageOffset = bodyDef.totalImageOffset;
-		image.style.left = (imageOffset[0] * state.camera.zoom) + 'px';
-		image.style.top  = (imageOffset[1] * state.camera.zoom) + 'px';
-
-		// Scale <img>
-		var transformString = 'scale(' + (state.camera.zoom / config.imageScale) + ')';
-		image.style.webkitTransform = transformString;
-		image.style.mozTransform    = transformString;
-		image.style.transform       = transformString;
-		image.src = 'images/' + bodyName + '.png';
-
-		element.appendChild(image);
-		stage.appendChild(element);
-		Object.defineProperty(body, 'element', {
-			value: element,
-			writable: true
-		});	
-	});
-}
-function syncPhysicsRepresentation(prop) {
-	prop.bodies.forEach(function(body) {
-		var physicsBody = body.physicsBody;
-		
-		physicsBody.getPosition(body.position);
-		body.rotation = physicsBody.getRotation();
-		physicsBody.getVelocity(body.velocity);
-		body.angularVelocity = physicsBody.getAngularVelocity();
-	});
-}
-function syncElementRepresentation(prop) {
-	prop.bodies.forEach(function(body) {
-		transformString = 
-			'translate3d(' +
-				(body.position[0] * state.camera.zoom) + 'px,' +
-				(body.position[1] * state.camera.zoom) + 'px,0)' +
-			'rotate(' + (degreesPerRadian * body.rotation) + 'deg)';
-		body.element.style.webkitTransform = transformString;
-		body.element.style.mozTransform    = transformString;
-		body.element.style.transform       = transformString;
-	});
-}
 // Graphics setup ----------
 
 var stage = document.getElementById('stage');
@@ -205,18 +117,15 @@ function init() {
 	world.addRigidBody(createBelt(21, 22, 30, 10, 0.5, 10));
 
 	state.props.forEach(function(prop) {
-		createPhysicsRepresentation(prop);
-		createElementRepresentation(prop);
+		prop.type.init(prop, stage, phys2D);
 	});
 }
 
 var update = function(delta) {
-	//delta = 1/60;
 	world.step(delta);
 
 	state.props.forEach(function(prop) {
-		syncPhysicsRepresentation(prop);
-		syncElementRepresentation(prop);
+		prop.type.update(prop);
 	});
 
 	var fps = 1 / delta;
@@ -246,11 +155,11 @@ function addProp(propDef) {
 	});
 	var prop = {
 		name:   name,
-		bodies: bodies
+		bodies: bodies,
+		type:   SimpleProp
 	};
+	prop.type.init(prop, stage, phys2D);
 	state.props.push(prop);
-	createPhysicsRepresentation(prop);
-	createElementRepresentation(prop);
 }
 var request = new XMLHttpRequest();
 request.open("GET", "characters.json");
