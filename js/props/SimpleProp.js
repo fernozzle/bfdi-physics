@@ -1,6 +1,6 @@
 var SimpleProp = {
-	init: function(prop, stageElement, phys2D) {
-		this._createPropPhysics (prop, phys2D);
+	init: function(prop, stageElement, phys2D, world) {
+		this._createPropPhysics (prop, phys2D, world);
 		this._createPropElements(prop, stageElement);
 	},
 	update: function(prop) {
@@ -9,7 +9,7 @@ var SimpleProp = {
 	},
 
 	// Physics -------------------------------------------------------------
-	_createPropPhysics: function(prop, phys2D) {
+	_createPropPhysics: function(prop, phys2D, world) {
 		var propDef = propDefs[prop.name];
 		prop.bodies.forEach(function(body, bodyIndex) {
 			var bodyDef = propDef.bodies[bodyIndex];

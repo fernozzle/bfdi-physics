@@ -65,64 +65,27 @@ function init() {
 	});
 	world.addRigidBody(border);
 
-	var createBelt = function createBeltFn(x1, y1, x2, y2, radius, speed) {
-		var normal = VMath.v2Build(y2 - y1, x1 - x2);
-		var length = VMath.v2Length(normal);
-		VMath.v2ScalarMul(normal, radius / length, normal);
-
-		var element = document.createElement('div');
-		element.className = 'belt';
-		element.style.width  = ((length + 2 * radius) * state.camera.zoom) + 'px';
-		element.style.height = (radius * 2 * state.camera.zoom) + 'px';
-		var transformString = 
-			'translate(' +
-				((x1 + normal[0] + normal[1]) * state.camera.zoom) + 'px,' +
-				((y1 + normal[1] - normal[0]) * state.camera.zoom) + 'px)' +
-			'rotate(' +
-				(degreesPerRadian * Math.atan2(y2 - y1, x2 - x1)) + 'deg)';
-		element.style.webkitTransform = transformString;
-		element.style.mozTransform = transformString;
-		element.style.transform = transformString;
-		stage.appendChild(element);
-
-		var shapes = [
-			phys2D.createPolygonShape({
-				vertices: [
-					[x1 + normal[0], y1 + normal[1]],
-					[x2 + normal[0], y2 + normal[1]],
-					[x2 - normal[0], y2 - normal[1]],
-					[x1 - normal[0], y1 - normal[1]]
-				],
-				material: conveyorBeltMaterial
-			}),
-			phys2D.createCircleShape({
-				radius: radius,
-				origin: [x1, y1],
-				material: conveyorBeltMaterial
-			}),
-			phys2D.createCircleShape({
-				radius: radius,
-				origin: [x2, y2],
-				material: conveyorBeltMaterial
-			})
-		];
-		return phys2D.createRigidBody({
-			type: 'static',
-			surfaceVelocity: [speed, 0],
-			shapes: shapes
-		});
-	};
-
-	world.addRigidBody(createBelt( 0, 11,  7, 14, 0.5,  2));
-	world.addRigidBody(createBelt( 7, 14, 12, 12, 0.5,  2));
-	world.addRigidBody(createBelt(12, 18, 20, 15, 0.5, 12));
-	world.addRigidBody(createBelt( 0, 22, 21, 22, 0.5,  2));
-	world.addRigidBody(createBelt(20, 10, 10,  5, 0.5, -2));
-	world.addRigidBody(createBelt(10,  5,  5,  5, 0.5, -2));
-	world.addRigidBody(createBelt(21, 22, 30, 10, 0.5, 10));
+	function addBelt(start, end, radius, speed) {
+		var prop = {
+			name:   'belt',
+			start:  start,
+			end:    end,
+			radius: radius,
+			speed:  speed
+		};
+		Object.defineProperty(prop, 'manager', {value: Belt});
+		state.props.push(prop);
+	}
+	addBelt([ 0, 11], [ 7, 14], 0.5,  2);
+	addBelt([ 7, 14], [12, 12], 0.5,  2);
+	addBelt([12, 18], [20, 15], 0.5, 12);
+	addBelt([ 0, 22], [21, 22], 0.5,  2);
+	addBelt([20, 10], [10,  5], 0.5, -2);
+	addBelt([10,  5], [ 5,  5], 0.5, -2);
+	addBelt([21, 22], [30, 10], 0.5, 10);
 
 	state.props.forEach(function(prop) {
-		prop.manager.init(prop, stage, phys2D);
+		prop.manager.init(prop, stage, phys2D, world);
 	});
 	var mouseDown = function(e) {
 		if (handConstraint) return;
@@ -215,7 +178,7 @@ function addProp(propDef) {
 		bodies: bodies,
 	};
 	Object.defineProperty(prop, 'manager', {value: SimpleProp});
-	prop.manager.init(prop, stage, phys2D);
+	prop.manager.init(prop, stage, phys2D, world);
 	state.props.push(prop);
 }
 var request = new XMLHttpRequest();
