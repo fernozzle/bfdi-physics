@@ -162,7 +162,6 @@ animator.start(update);
 
 // Load prop definitions and add props once loaded
 // -----------------------------------------------
-var propDefs;
 function addProp(propDef) {
 	var bodies = [];
 	propDef.bodies.forEach(function() {
@@ -184,10 +183,10 @@ function addProp(propDef) {
 var request = new XMLHttpRequest();
 request.open("GET", "characters.json");
 request.onload = function() {
-	propDefs = JSON.parse(request.responseText);
+	SimpleProp.propDefs = JSON.parse(request.responseText);
 
-	for (name in propDefs) {
-		addProp(propDefs[name]);
+	for (name in SimpleProp.propDefs) {
+		addProp(SimpleProp.propDefs[name]);
 	}
 }
 request.send();

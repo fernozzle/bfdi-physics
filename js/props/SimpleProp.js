@@ -7,10 +7,11 @@ var SimpleProp = {
 		this._syncPropPhysics (prop);
 		this._syncPropElements(prop);
 	},
+	propDefs: null,
 
 	// Physics -------------------------------------------------------------
 	_createPropPhysics: function(prop, phys2D, world) {
-		var propDef = propDefs[prop.name];
+		var propDef = this.propDefs[prop.name];
 		prop.bodies.forEach(function(body, bodyIndex) {
 			var bodyDef = propDef.bodies[bodyIndex];
 
@@ -56,7 +57,7 @@ var SimpleProp = {
 
 	// Elements ------------------------------------------------------------
 	_createPropElements: function(prop, stageElement) {
-		var propDef = propDefs[prop.name];
+		var propDef = this.propDefs[prop.name];
 		prop.bodies.forEach(function(body, bodyIndex) {
 			var bodyDef = propDef.bodies[bodyIndex];
 			var bodyName = bodyDef.name || prop.name;
