@@ -102,7 +102,7 @@ function init() {
 				anchorA: point,
 				anchorB: bodies[0].transformWorldPointToLocal(point),
 				stiff: false,
-				maxForce: 1e5
+				maxForce: 1e6
 			});
 			world.addConstraint(handConstraint);
 		}
