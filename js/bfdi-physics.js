@@ -32,6 +32,10 @@ var conveyorBeltMaterial = phys2D.createMaterial({
 	rollingFriction: 0.1
 });
 
+var handReferenceBody = phys2D.createRigidBody({type: 'static'});
+world.addRigidBody(handReferenceBody);
+var handConstraint = null;
+
 // FPS counter setup ----------
 
 var previousTime = Date.now();
@@ -39,6 +43,7 @@ var fpsElement = document.getElementById('fps');
 
 function init() {
 	world.clear();
+	handConstraint = null;
 
 	var thickness = 0.01;
 	var border = phys2D.createRigidBody({
@@ -119,9 +124,61 @@ function init() {
 	state.props.forEach(function(prop) {
 		prop.type.init(prop, stage, phys2D);
 	});
+	var mouseDown = function(e) {
+		if (handConstraint) return;
+
+		var point = [e.clientX, e.clientY];
+		VMath.v2ScalarMul(point, 1 / state.camera.zoom, point);
+
+		var bodies = [];
+		world.bodyPointQuery(point, bodies);
+		if (bodies[0] && bodies[0].isDynamic()) {
+			handConstraint = phys2D.createPointConstraint({
+				bodyA: handReferenceBody,
+				bodyB: bodies[0],
+				anchorA: point,
+				anchorB: bodies[0].transformWorldPointToLocal(point),
+				stiff: false,
+				maxForce: 1e5
+			});
+			world.addConstraint(handConstraint);
+		}
+
+		return false;
+	}
+	var mouseMove = function(e) {
+		if (!handConstraint) return;
+
+		var point = [e.clientX, e.clientY];
+		VMath.v2ScalarMul(point, 1 / state.camera.zoom, point);
+
+		handConstraint.setAnchorA(point);
+	}
+	var mouseUp = function(e) {
+		if (handConstraint) {
+			world.removeConstraint(handConstraint);
+			handConstraint = null;
+		}
+	}
+	stage.onmousedown = mouseDown;
+	stage.onmousemove = mouseMove;
+	stage.onmouseup = mouseUp;
+	stage.ontouchstart = function(e) {
+		return mouseDown(e.touches[0]);
+	}
+	stage.ontouchmove = function(e) {
+		return mouseMove(e.touches[0]);
+	}
+	stage.ontouchend = function(e) {
+		return mouseUp(e.touches[0]);
+	}
 }
 
 var update = function(delta) {
+	if (handConstraint) {
+		var body = handConstraint.bodyB;
+		body.setAngularVelocity(body.getAngularVelocity() * 0.9);
+	}
 	world.step(delta);
 
 	state.props.forEach(function(prop) {
