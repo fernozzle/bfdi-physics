@@ -122,7 +122,7 @@ function init() {
 	world.addRigidBody(createBelt(21, 22, 30, 10, 0.5, 10));
 
 	state.props.forEach(function(prop) {
-		prop.type.init(prop, stage, phys2D);
+		prop.manager.init(prop, stage, phys2D);
 	});
 	var mouseDown = function(e) {
 		if (handConstraint) return;
@@ -182,7 +182,7 @@ var update = function(delta) {
 	world.step(delta);
 
 	state.props.forEach(function(prop) {
-		prop.type.update(prop);
+		prop.manager.update(prop);
 	});
 
 	var fps = 1 / delta;
@@ -213,9 +213,9 @@ function addProp(propDef) {
 	var prop = {
 		name:   name,
 		bodies: bodies,
-		type:   SimpleProp
 	};
-	prop.type.init(prop, stage, phys2D);
+	Object.defineProperty(prop, 'manager', {value: SimpleProp});
+	prop.manager.init(prop, stage, phys2D);
 	state.props.push(prop);
 }
 var request = new XMLHttpRequest();
