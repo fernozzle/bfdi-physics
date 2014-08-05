@@ -2,11 +2,15 @@ var state = {
 	gravity: [0, 20],
 	size: [30, 22],
 	props: [],
-	camera: {zoom: 30}
+	camera: {
+		position: [0, 0],
+		zoom: 0.6
+	}
 };
 
 var config = {
 	imageScale: 50, // Size of images compared to defined shapes
+	elementScale: 50, // Size to create/place elements
 	maxTimestep: 0.5
 };
 var renderFramerate = 24;
@@ -14,9 +18,26 @@ var renderDuration  = 60; // in seconds
 
 // Graphics setup ----------
 
-var stage = document.getElementById('stage');
-stage.style.width  = state.size[0] * state.camera.zoom + 'px';
-stage.style.height = state.size[1] * state.camera.zoom + 'px';
+var container = document.getElementById('container');
+var stage     = document.getElementById('stage');
+stage.style.width  = state.size[0] * config.elementScale + 'px';
+stage.style.height = state.size[1] * config.elementScale + 'px';
+updateStageTransform();
+function setCamera(position, zoom) {
+	state.camera.position = position;
+	state.camera.zoom     = zoom;
+	updateStageTransform();
+}
+function updateStageTransform() {
+	var position = state.camera.position;
+	var zoom     = state.camera.zoom;
+	stage.style.transform =
+		'scale(' +
+			state.camera.zoom + ')' +
+		'translate3d(' +
+			(-position[0] * config.elementScale) + 'px,' +
+			(-position[1] * config.elementScale) + 'px,0)';
+}
 var degreesPerRadian = 57.2957795;
 
 var animator = new Animator();
@@ -87,11 +108,26 @@ function init() {
 	state.props.forEach(function(prop) {
 		PropManager.init(prop, stage, phys2D, world);
 	});
-	var mouseDown = function(e) {
+
+	function getMousePosition(event, element) {
+		var elementBounds = element.getBoundingClientRect();
+		var elementX = elementBounds.left;
+		var elementY = elementBounds.top;
+		var mouseX = event.clientX;
+		var mouseY = event.clientY;
+		return [mouseX - elementX, mouseY - elementY];
+	}
+	function getWorldPosition(displayPosition) {
+		var p = VMath.v2ScalarMul(
+			displayPosition,
+			1 / config.elementScale / state.camera.zoom
+		);
+		return VMath.v2Add(p, state.camera.position, p);
+	}
+	var mouseDown = function(event) {
 		if (handConstraint) return;
 
-		var point = [e.clientX, e.clientY];
-		VMath.v2ScalarMul(point, 1 / state.camera.zoom, point);
+		var point = getWorldPosition(getMousePosition(event, container));
 
 		var bodies = [];
 		world.bodyPointQuery(point, bodies);
@@ -107,34 +143,34 @@ function init() {
 			world.addConstraint(handConstraint);
 			console.log(bodies[0].userData.prop);
 		}
-		return false;
+		event.preventDefault();
+		event.stopPropagation();
 	}
-	var mouseMove = function(e) {
+	var mouseMove = function(event) {
 		if (!handConstraint) return;
 
-		var point = [e.clientX, e.clientY];
-		VMath.v2ScalarMul(point, 1 / state.camera.zoom, point);
+		var point = getWorldPosition(getMousePosition(event, container));
 
 		handConstraint.setAnchorA(point);
 	}
-	var mouseUp = function(e) {
+	var mouseUp = function(event) {
 		if (handConstraint) {
 			world.removeConstraint(handConstraint);
 			handConstraint = null;
 		}
 	}
-	stage.onmousedown = mouseDown;
-	stage.onmousemove = mouseMove;
-	stage.onmouseup = mouseUp;
-	stage.ontouchstart = function(e) {
-		return mouseDown(e.touches[0]);
-	}
-	stage.ontouchmove = function(e) {
-		return mouseMove(e.touches[0]);
-	}
-	stage.ontouchend = function(e) {
-		return mouseUp(e.touches[0]);
-	}
+	container.addEventListener('mousedown', mouseDown, false);
+	container.addEventListener('mousemove', mouseMove, false);
+	container.addEventListener('mouseup',   mouseUp,   false);
+	container.addEventListener('touchstart', function(event) {
+		mouseDown(event.touches[0]);
+	}, false);
+	container.addEventListener('touchmove',  function(event) {
+		mouseMove(event.touches[0]);
+	}, false);
+	container.addEventListener('touchend',   function(event) {
+		mouseUp(event.touches[0]);
+	}, false);
 }
 
 var update = function(delta, realDelta) {

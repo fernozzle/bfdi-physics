@@ -13,12 +13,19 @@
 				margin: 0;
 				font-family: Consolas, monospace;
 			}
+			#container {
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
 			#stage {
 				position: absolute;
 				left: 0;
 				top:  0;
 				z-index: 0;
 				background: #fff;
+				-webkit-transform-origin: top left;
+				-moz-transform-origin: top left;
 			}
 			.body {
 				position: absolute;
@@ -47,7 +54,9 @@
 		</style>
 	</head>
 	<body>
-		<div id="stage"></div>
+		<div id="container">
+			<div id="stage"></div>
+		</div>
 		<pre id="fps"></pre>
 
 		<!-- Physics engine (Turbulenz) -->

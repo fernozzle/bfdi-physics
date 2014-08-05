@@ -69,12 +69,12 @@ PropManager.managers.belt = {
 		var element = document.createElement('div');
 		element.className = 'belt';
 
-		element.style.width  = ((length + 2 * prop.radius) * state.camera.zoom) + 'px';
-		element.style.height = ((         2 * prop.radius) * state.camera.zoom) + 'px';
+		element.style.width  = ((length + 2 * prop.radius) * config.elementScale) + 'px';
+		element.style.height = ((         2 * prop.radius) * config.elementScale) + 'px';
 		var transformString =
 			'translate(' +
-				((prop.start[0] + normal[0] + normal[1]) * state.camera.zoom) + 'px,' +
-				((prop.start[1] + normal[1] - normal[0]) * state.camera.zoom) + 'px)' +
+				((prop.start[0] + normal[0] + normal[1]) * config.elementScale) + 'px,' +
+				((prop.start[1] + normal[1] - normal[0]) * config.elementScale) + 'px)' +
 			'rotate(' +
 				(this._angleBetween(prop.start, prop.end) * degreesPerRadian) + 'deg)';
 		element.style.webkitTransform = transformString;

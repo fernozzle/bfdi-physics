@@ -80,11 +80,11 @@ PropManager.managers.simpleProp = {
 			// Create <img>
 			var image = document.createElement('img');
 			var imageOffset = bodyDef.totalImageOffset;
-			image.style.left = (imageOffset[0] * state.camera.zoom) + 'px';
-			image.style.top  = (imageOffset[1] * state.camera.zoom) + 'px';
+			image.style.left = (imageOffset[0] * config.elementScale) + 'px';
+			image.style.top  = (imageOffset[1] * config.elementScale) + 'px';
 
 			// Scale <img>
-			var transformString = 'scale(' + (state.camera.zoom / config.imageScale) + ')';
+			var transformString = 'scale(' + (config.elementScale / config.imageScale) + ')';
 			image.style.webkitTransform = transformString;
 			image.style.mozTransform    = transformString;
 			image.style.transform       = transformString;
@@ -104,8 +104,8 @@ PropManager.managers.simpleProp = {
 	_syncBodyElement: function(body) {
 		transformString =
 			'translate3d(' +
-				(body.position[0] * state.camera.zoom) + 'px,' +
-				(body.position[1] * state.camera.zoom) + 'px,0)' +
+				(body.position[0] * config.elementScale) + 'px,' +
+				(body.position[1] * config.elementScale) + 'px,0)' +
 			'rotate(' + (degreesPerRadian * body.rotation) + 'deg)';
 		body.element.style.webkitTransform = transformString;
 		body.element.style.mozTransform    = transformString;
