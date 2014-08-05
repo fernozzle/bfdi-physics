@@ -10,5 +10,8 @@ var PropManager = {
 	},
 	update: function(prop) {
 		prop.manager.update(prop);
+	},
+	destruct: function(prop, stage, phys2D, world) {
+		prop.manager.destruct(prop, stage, phys2D, world);
 	}
 };

@@ -5,6 +5,10 @@ PropManager.managers.belt = {
 	},
 	update: function(prop) {
 	},
+	destruct: function(prop, stageElement, phys2D, world) {
+		this._removePropPhysics(prop, world);
+		this._removePropElement(prop, stageElement);
+	},
 
 	// Physics -------------------------------------------------------------
 	_createPropPhysics: function(prop, phys2D, world) {
@@ -44,9 +48,12 @@ PropManager.managers.belt = {
 		world.addRigidBody(physicsBody);
 
 		Object.defineProperty(prop, 'physicsBody', {
-			value: physicsBody,
-			writable: true
+			value: physicsBody
 		});
+	},
+
+	_removePropPhysics: function(prop, world) {
+		world.removeRigidBody(prop.physicsBody);
 	},
 
 	// Elements ------------------------------------------------------------
@@ -74,11 +81,18 @@ PropManager.managers.belt = {
 		element.style.transform       = transformString;
 
 		stage.appendChild(element);
+		Object.defineProperty(prop, 'element', {
+			value: element
+		});
 	},
 	_angleBetween: function(v1, v2) {
 		return Math.atan2(
 			v2[1] - v1[1],
 			v2[0] - v1[0]
 		);
+	},
+
+	_removePropElement: function(prop, stageElement) {
+		stageElement.removeChild(prop.element);
 	}
 }

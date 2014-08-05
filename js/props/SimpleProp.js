@@ -7,6 +7,10 @@ PropManager.managers.simpleProp = {
 		this._syncPropPhysics (prop);
 		this._syncPropElements(prop);
 	},
+	destruct: function(prop, stageElement, phys2D, world) {
+		this._removePropPhysics (prop, world);
+		this._removePropElements(prop, stageElement);
+	},
 	propDefs: null,
 
 	// Physics -------------------------------------------------------------
@@ -23,8 +27,7 @@ PropManager.managers.simpleProp = {
 			
 			world.addRigidBody(physicsBody);
 			Object.defineProperty(body, 'physicsBody', {
-				value: physicsBody,
-				writable: true
+				value: physicsBody
 			});
 		});
 		if (propDef.constraints) {
@@ -43,6 +46,7 @@ PropManager.managers.simpleProp = {
 			});
 		}
 	},
+
 	_syncPropPhysics: function(prop) {
 		prop.bodies.forEach(this._syncBodyPhysics);
 	},
@@ -53,6 +57,12 @@ PropManager.managers.simpleProp = {
 		body.rotation = physicsBody.getRotation();
 		physicsBody.getVelocity(body.velocity);
 		body.angularVelocity = physicsBody.getAngularVelocity();
+	},
+
+	_removePropPhysics: function(prop, world) {
+		prop.bodies.forEach(function(body) {
+			world.removeRigidBody(body.physicsBody);
+		});
 	},
 
 	// Elements ------------------------------------------------------------
@@ -82,11 +92,11 @@ PropManager.managers.simpleProp = {
 			element.appendChild(image);
 			stageElement.appendChild(element);
 			Object.defineProperty(body, 'element', {
-				value: element,
-				writable: true
-			});	
+				value: element
+			});
 		});
 	},
+
 	_syncPropElements: function(prop) {
 		prop.bodies.forEach(this._syncBodyElement);
 	},
@@ -99,5 +109,11 @@ PropManager.managers.simpleProp = {
 		body.element.style.webkitTransform = transformString;
 		body.element.style.mozTransform    = transformString;
 		body.element.style.transform       = transformString;
+	},
+
+	_removePropElements: function(prop, stageElement) {
+		prop.bodies.forEach(function(body) {
+			stageElement.removeChild(body.element);
+		});
 	}
 };
