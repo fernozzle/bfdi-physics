@@ -6,7 +6,8 @@ var state = {
 };
 
 var config = {
-	imageScale: 50 // Size of images compared to defined shapes
+	imageScale: 50, // Size of images compared to defined shapes
+	maxTimestep: 0.5
 };
 var renderFramerate = 24;
 var renderDuration  = 60; // in seconds
@@ -136,7 +137,7 @@ function init() {
 	}
 }
 
-var update = function(delta) {
+var update = function(delta, realDelta) {
 	if (handConstraint) {
 		var body = handConstraint.bodyB;
 		body.setAngularVelocity(body.getAngularVelocity() * 0.9);
@@ -147,7 +148,7 @@ var update = function(delta) {
 		PropManager.update(prop);
 	});
 
-	var fps = 1 / delta;
+	var fps = 1 / realDelta;
 	var renderSeconds = delta * renderDuration * renderFramerate;
 	fpsElement.innerHTML =
 		('   ' + fps.toFixed(1)).substr(-5, 5) + 'fps | ' +

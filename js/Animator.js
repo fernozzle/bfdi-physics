@@ -4,7 +4,7 @@
 var Animator = function() {
 	this._wasHidden = false;
 	var that = this;
-	document.addEventListener(Animator.visibilityChangeIdentifier, function() {
+	document.addEventListener(Animator.changeIdentifier, function() {
 		// Only enable `_wasHidden`: it must be disabled
 		// after one non-hidden frame
 		if (document[Animator.hiddenIdentifier]) {
@@ -25,16 +25,16 @@ Animator.requestAnimationFrame = (
 );
 if (typeof document.hidden !== 'undefined') {
 	Animator.hiddenIdentifier = 'hidden';
-	Animator.visibilityChangeIdentifier = 'visibilitychange';
+	Animator.changeIdentifier = 'visibilitychange';
 } else if (typeof document.mozHidden !== 'undefined') {
 	Animator.hiddenIdentifier = 'mozHidden';
-	Animator.visibilityChangeIdentifier = 'mozvisibilitychange';
+	Animator.changeIdentifier = 'mozvisibilitychange';
 } else if (typeof document.msHidden !== 'undefined') {
 	Animator.hiddenIdentifier = 'msHidden';
-	Animator.visibilityChangeIdentifier = 'msvisibilitychange';
+	Animator.changeIdentifier = 'msvisibilitychange';
 } else if (typeof document.webkitHidden !== 'undefined') {
 	Animator.hiddenIdentifier = 'webkitHidden';
-	Animator.visibilityChangeIdentifier = 'webkitvisibilitychange';
+	Animator.changeIdentifier = 'webkitvisibilitychange';
 }
 
 Animator.prototype.start = function(callback) {
@@ -42,7 +42,7 @@ Animator.prototype.start = function(callback) {
 	var that = this;
 	this._animate = function() {
 		var currentTime = Date.now();
-		var delta = currentTime - that._previousTime;
+		var delta = (currentTime - that._previousTime) / 1000;
 
 		if (!document[Animator.hiddenIdentifier]) {
 			// If previously hidden, wait a frame in order to
@@ -50,7 +50,7 @@ Animator.prototype.start = function(callback) {
 			if (that._wasHidden) {
 				that._wasHidden = false;
 			} else {
-				that._callback(delta / 1000);
+				that._callback(Math.min(delta, config.maxTimestep), delta);
 			}
 		}
 		that._previousTime = currentTime;
