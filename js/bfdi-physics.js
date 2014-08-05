@@ -107,6 +107,7 @@ function init() {
 			world.addConstraint(handConstraint);
 		}
 
+		console.log(world);
 		return false;
 	}
 	var mouseMove = function(e) {

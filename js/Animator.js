@@ -44,7 +44,7 @@ Animator.prototype.start = function(callback) {
 		var currentTime = Date.now();
 		var delta = (currentTime - that._previousTime) / 1000;
 
-		if (!document[Animator.hiddenIdentifier]) {
+		if (!document[Animator.hiddenIdentifier] && delta > 0) {
 			// If previously hidden, wait a frame in order to
 			// record a more reasonable time delta
 			if (that._wasHidden) {
