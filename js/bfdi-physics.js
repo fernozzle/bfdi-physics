@@ -73,7 +73,6 @@ function init() {
 			radius: radius,
 			speed:  speed
 		};
-		Object.defineProperty(prop, 'manager', {value: Belt});
 		state.props.push(prop);
 	}
 	addBelt([ 0, 11], [ 7, 14], 0.5,  2);
@@ -85,7 +84,7 @@ function init() {
 	addBelt([21, 22], [30, 10], 0.5, 10);
 
 	state.props.forEach(function(prop) {
-		prop.manager.init(prop, stage, phys2D, world);
+		PropManager.init(prop, stage, phys2D, world);
 	});
 	var mouseDown = function(e) {
 		if (handConstraint) return;
@@ -145,7 +144,7 @@ var update = function(delta) {
 	world.step(delta);
 
 	state.props.forEach(function(prop) {
-		prop.manager.update(prop);
+		PropManager.update(prop);
 	});
 
 	var fps = 1 / delta;
@@ -176,17 +175,16 @@ function addProp(propDef) {
 		name:   name,
 		bodies: bodies,
 	};
-	Object.defineProperty(prop, 'manager', {value: SimpleProp});
-	prop.manager.init(prop, stage, phys2D, world);
+	PropManager.init(prop, stage, phys2D, world);
 	state.props.push(prop);
 }
 var request = new XMLHttpRequest();
 request.open("GET", "characters.json");
 request.onload = function() {
-	SimpleProp.propDefs = JSON.parse(request.responseText);
+	PropManager.managers.simpleProp.propDefs = JSON.parse(request.responseText);
 
-	for (name in SimpleProp.propDefs) {
-		addProp(SimpleProp.propDefs[name]);
+	for (name in PropManager.managers.simpleProp.propDefs) {
+		addProp(PropManager.managers.simpleProp.propDefs[name]);
 	}
 }
 request.send();

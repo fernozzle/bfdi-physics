@@ -1,4 +1,4 @@
-var SimpleProp = {
+PropManager.managers.simpleProp = {
 	init: function(prop, stageElement, phys2D, world) {
 		this._createPropPhysics (prop, phys2D, world);
 		this._createPropElements(prop, stageElement);
@@ -100,4 +100,4 @@ var SimpleProp = {
 		body.element.style.mozTransform    = transformString;
 		body.element.style.transform       = transformString;
 	}
-}
+};

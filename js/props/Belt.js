@@ -1,4 +1,4 @@
-var Belt = {
+PropManager.managers.belt = {
 	init: function(prop, stageElement, phys2D, world) {
 		this._createPropPhysics(prop, phys2D, world);
 		this._createPropElement(prop, stageElement);
