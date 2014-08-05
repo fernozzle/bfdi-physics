@@ -24,6 +24,7 @@ PropManager.managers.simpleProp = {
 			physicsBody.setRotation(body.rotation);
 			physicsBody.setVelocity(body.velocity);
 			physicsBody.setAngularVelocity(body.angularVelocity);
+			physicsBody.userData = {prop: prop};
 			
 			world.addRigidBody(physicsBody);
 			Object.defineProperty(body, 'physicsBody', {

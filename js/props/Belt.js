@@ -43,7 +43,8 @@ PropManager.managers.belt = {
 		var physicsBody = phys2D.createRigidBody({
 			type: 'static',
 			surfaceVelocity: [prop.speed, 0],
-			shapes: shapes
+			shapes: shapes,
+			userData: {prop: prop}
 		});
 		world.addRigidBody(physicsBody);
 

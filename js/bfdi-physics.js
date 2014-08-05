@@ -95,7 +95,7 @@ function init() {
 
 		var bodies = [];
 		world.bodyPointQuery(point, bodies);
-		if (bodies[0] && bodies[0].isDynamic()) {
+		if (bodies[0]) {
 			handConstraint = phys2D.createPointConstraint({
 				bodyA: handReferenceBody,
 				bodyB: bodies[0],
@@ -105,9 +105,8 @@ function init() {
 				maxForce: 1e6
 			});
 			world.addConstraint(handConstraint);
+			console.log(bodies[0].userData.prop);
 		}
-
-		console.log(world);
 		return false;
 	}
 	var mouseMove = function(e) {
